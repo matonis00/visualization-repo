@@ -11,6 +11,7 @@ public class Maximize : MonoBehaviour
     public GameObject sectionToShow;
     public GameObject scetionToHide;
     public XRSimpleInteractable pushButton;
+    public TwoStateButton pushButtonMultiple;
     public int elementId = 0;
     public bool get = false;
     public ShaderData shaderData;
