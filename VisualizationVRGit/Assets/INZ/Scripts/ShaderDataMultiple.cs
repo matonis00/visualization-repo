@@ -63,7 +63,8 @@ public class ShaderDataMultiple : MonoBehaviour
     public enum lineVariantEnum
     {
         Normal = 1,
-        AllwaysConnected = 2
+        AllwaysConnected = 2,
+        Catmull = 3
     }
 
 

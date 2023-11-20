@@ -8,7 +8,7 @@ Shader "Unlit/TestShaderMultiple"
         _OffsetY ("Offset Y", Float) = -0.5
         _UnitPerGridX ("Unit per Grid on X" ,Float) = 1.0 
         _UnitPerGridY ("Unit per Grid on Y" ,Float) = 1.0 
-        [Enum(Normal,1,AllwaysConnected,2)] _LineVariant ("Line Variant", int) = 1
+        [Enum(Normal,1,AllwaysConnected,2,Catmull,3)] _LineVariant ("Line Variant", int) = 1
         _LineColor ("Line Color", Color) = (1,0,0,1)
         _LineSize ("Line Size", Float) = 0.05
         [Enum(Square,1,Circle,2)] _PointShape ("Point Shape", int) = 1
@@ -110,11 +110,10 @@ Shader "Unlit/TestShaderMultiple"
             }
 
             
-            float Line(float2 p, float2 a, float2 b, float thickness,float previos) 
+            float Line(float2 p, float2 a, float2 b, float thickness) 
             {                
                 float cy;
-                if(previos != 1.0) return previos;
-                else if(a.x <= p.x && p.x <= b.x)
+                if(a.x <= p.x && p.x <= b.x)
                 {
                     float tmp = (p.x - a.x) / (b.x - a.x);
                     cy = a.y +  tmp * (b.y - a.y);
@@ -124,7 +123,7 @@ Shader "Unlit/TestShaderMultiple"
                 }
                 else
                 {
-                    return previos;
+                    return 1.0;
                 }
 
 
@@ -157,6 +156,72 @@ Shader "Unlit/TestShaderMultiple"
                 //float xd = acos( dot(a,b) / (distance(a,float2(0,0)) * distance(b,float2(0,0))));
                 
             }
+
+            float Line3(float2 p, float2 a, float2 b, float thickness) 
+            {
+                
+
+                float2 pa = p - a;
+                float2 ba = b - a;
+
+                float h = clamp( dot(pa,ba)/dot(ba,ba), 0.0, 1.0 );
+                // ????????
+                float idk = length(pa - ba*h);
+
+                return smoothstep(0.0, thickness, idk);
+            }
+
+
+
+            float2 splineInterpolation(float2 p0, float2 p1, float2 p2, float2 p3, float t) {
+                float alpha = 1.0;
+                float tension = 0.0;
+                
+                float t01 = pow(distance(p0, p1), alpha);
+                float t12 = pow(distance(p1, p2), alpha);
+                float t23 = pow(distance(p2, p3), alpha);
+
+                float2 m1 = (1.0f - tension) *
+                    (p2 - p1 + t12 * ((p1 - p0) / t01 - (p2 - p0) / (t01 + t12)));
+                float2 m2 = (1.0f - tension) *
+                    (p2 - p1 + t12 * ((p3 - p2) / t23 - (p3 - p1) / (t12 + t23)));
+                
+                float2 a = 2.0f * (p1 - p2) + m1 + m2;
+                float2 b = -3.0f * (p1 - p2) - m1 - m1 - m2;
+                float2 c = m1;
+                float2 d = p1;
+
+                return a * t * t * t +
+                    b * t * t +
+                    c * t +
+                    d;
+
+            }
+
+
+
+            float Spline(float2 p, float2 p0, float2 p1,float2 p2,float2 p3, float thickness, int subLines) 
+            {
+                float curve = 0.0;
+                float2 a = p1;
+
+                for (int i = 1; i <= subLines; i++) {
+                    float2 b = splineInterpolation(p0, p1, p2, p3, float(i)*(1.0/float(subLines)));
+                    curve = Line3(p,a,b,thickness);
+                    if(curve != 1.0) return 0.0;
+                    a = b;
+                }
+                
+                return curve;              
+                
+                //float xd = acos( dot(a,b) / (distance(a,float2(0,0)) * distance(b,float2(0,0))));
+                
+            }
+
+
+
+
+
 
             Interpolators vert (MeshData v)
             {
@@ -213,7 +278,9 @@ Shader "Unlit/TestShaderMultiple"
                     procesedIndex++;
 
                     float numberOfPointsInGraph = denormalization(numberOfPointsInGraphToNormlize, _MinPointsAmount,_MaxPointsAmount);
-                    float2 beforePointValue;
+                    float2 beforePointValue = float2(0.0,0.0);
+                    float2 beforeCRPointValue;
+                    float2 afterCRPointValue = float2(10.0,10.0);
                     [loop]
                     for(int pIndex = 0; pIndex < numberOfPointsInGraph ; pIndex++, procesedIndex++)
                     {
@@ -233,11 +300,25 @@ Shader "Unlit/TestShaderMultiple"
                             return finalPixelColor;
                         }
 
-                        if(pIndex >= 1)
+
+                        if(pIndex >= 0 && pIndex < (numberOfPointsInGraph-3) && _LineVariant == 3 && isColored != 1.0)
+                        {
+                            float2 p0 = tex1D(_GraphsTex, procesedIndex*pointReversedAmount).xy; // Getting point xy values
+                            p0 = denormalization(p0, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
+                            float2 p1 = tex1D(_GraphsTex, (procesedIndex+1)*pointReversedAmount).xy; // Getting point xy values
+                            p1 = denormalization(p1, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
+                            float2 p2 = tex1D(_GraphsTex, (procesedIndex+2)*pointReversedAmount).xy; // Getting point xy values
+                            p2 = denormalization(p2, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
+                            float2 p3 = tex1D(_GraphsTex, (procesedIndex+3)*pointReversedAmount).xy; // Getting point xy values
+                            p3 = denormalization(p3, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
+                            isLine = Spline(i.uv,p0,p1,p2,p3,_LineSize,100);
+                            beforePointValue = actualPointValue;
+                        }
+                        else if(pIndex >= 1)
                         {   
                             //Checking if pixel is belong to line
                             if(_LineVariant == 1)
-                            isLine = Line(i.uv,beforePointValue,actualPointValue,_LineSize, isLine);
+                            isLine = Line(i.uv,beforePointValue,actualPointValue,_LineSize);
                             else if (_LineVariant == 2)
                             isLine = Line2(i.uv,beforePointValue,actualPointValue,_LineSize, isLine);
                             beforePointValue = actualPointValue;
@@ -247,7 +328,7 @@ Shader "Unlit/TestShaderMultiple"
                             beforePointValue = actualPointValue;
                         }
 
-                        if(isLine != 1.0)
+                        if(isLine != 1.0 && isColored != 1.0 )
                         {
                             finalPixelColor = lineColorOfGraph;
                             isColored = 1.0;

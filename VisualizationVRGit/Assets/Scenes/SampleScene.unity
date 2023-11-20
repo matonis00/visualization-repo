@@ -13091,6 +13091,66 @@ PrefabInstance:
       propertyPath: m_Name
       value: MultipleGraph
       objectReference: {fileID: 0}
+    - target: {fileID: 6066412839745163378, guid: 4ee7740d061e55c4db032289d0e89565,
+        type: 3}
+      propertyPath: lineVariant
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066412839745163378, guid: 4ee7740d061e55c4db032289d0e89565,
+        type: 3}
+      propertyPath: graphs.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066412839745163378, guid: 4ee7740d061e55c4db032289d0e89565,
+        type: 3}
+      propertyPath: graphs.Array.data[0].points.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066412839745163378, guid: 4ee7740d061e55c4db032289d0e89565,
+        type: 3}
+      propertyPath: graphs.Array.data[1].points.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066412839745163378, guid: 4ee7740d061e55c4db032289d0e89565,
+        type: 3}
+      propertyPath: graphs.Array.data[0].points.Array.data[3].x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066412839745163378, guid: 4ee7740d061e55c4db032289d0e89565,
+        type: 3}
+      propertyPath: graphs.Array.data[0].points.Array.data[3].y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066412839745163378, guid: 4ee7740d061e55c4db032289d0e89565,
+        type: 3}
+      propertyPath: graphs.Array.data[0].points.Array.data[4].x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066412839745163378, guid: 4ee7740d061e55c4db032289d0e89565,
+        type: 3}
+      propertyPath: graphs.Array.data[0].points.Array.data[4].y
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066412839745163378, guid: 4ee7740d061e55c4db032289d0e89565,
+        type: 3}
+      propertyPath: graphs.Array.data[1].points.Array.data[3].x
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066412839745163378, guid: 4ee7740d061e55c4db032289d0e89565,
+        type: 3}
+      propertyPath: graphs.Array.data[1].points.Array.data[3].y
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066412839745163378, guid: 4ee7740d061e55c4db032289d0e89565,
+        type: 3}
+      propertyPath: graphs.Array.data[1].points.Array.data[4].x
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066412839745163378, guid: 4ee7740d061e55c4db032289d0e89565,
+        type: 3}
+      propertyPath: graphs.Array.data[1].points.Array.data[4].y
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
