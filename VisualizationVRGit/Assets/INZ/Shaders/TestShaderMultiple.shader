@@ -340,7 +340,7 @@ Shader "Unlit/TestShaderMultiple"
                             float2 p2 = tex1D(_GraphsTex, (procesedIndex+1)*pointReversedAmount).xy; // Getting point xy values
                             p2 = denormalization(p2, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
                             
-                            if(!all(p0==p1 || p0 == p2 || p0 == p3 || p1 == p2 || p1 == p3 || p2 == p3))
+                            
                             isLine = Spline(i.uv,p0,p1,p2,p3,_LineSize,20);
 
 

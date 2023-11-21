@@ -92,7 +92,8 @@ public class ShaderDataMultiple : MonoBehaviour
         int desireLength = 0;
         foreach (Graph graph in graphs)
         {
-            desireLength += graph.points.Length;
+
+            desireLength += graph.points.Distinct().ToArray().Length;
             desireLength += 3;
         }
         Texture2D input = new Texture2D(desireLength, 1, TextureFormat.RGBA64, false);
@@ -101,14 +102,16 @@ public class ShaderDataMultiple : MonoBehaviour
         int index = 0;
         for (int i = 0; i < graphs.Length; i++)
         {
+            Vector2[] orderedPoints = graphs[i].points.Distinct().ToArray().OrderBy(v => v.x).ToArray<Vector2>();
             input.SetPixel(index, 0, graphs[i].pointColor);
             index++;
             input.SetPixel(index, 0, graphs[i].lineColor);
             index++;
-            input.SetPixel(index, 0, new Color(normalizeValue(graphs[i].points.Length,minPointAmount,maxPointAmount),0f,0f,1f));
+            input.SetPixel(index, 0, new Color(normalizeValue(orderedPoints.Length,minPointAmount,maxPointAmount),0f,0f,1f));
             index++;
 
-            Vector2[] orderedPoints = graphs[i].points.OrderBy(v => v.x).ToArray<Vector2>();
+           
+             
             for (int j = 0; j < orderedPoints.Length; j++, index++)
             {
                 input.SetPixel(index, 0, new Color(normalizeValue(orderedPoints[j].x,minXPointValue,maxXPointValue), normalizeValue(orderedPoints[j].y,minYPointValue,maxYPointValue), 1.0f,1.0f));
