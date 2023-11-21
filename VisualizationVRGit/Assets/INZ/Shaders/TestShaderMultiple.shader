@@ -278,61 +278,139 @@ Shader "Unlit/TestShaderMultiple"
                     procesedIndex++;
 
                     float numberOfPointsInGraph = denormalization(numberOfPointsInGraphToNormlize, _MinPointsAmount,_MaxPointsAmount);
-                    float2 beforePointValue = float2(0.0,0.0);
-                    float2 beforeCRPointValue;
-                    float2 afterCRPointValue = float2(10.0,10.0);
-                    [loop]
-                    for(int pIndex = 0; pIndex < numberOfPointsInGraph ; pIndex++, procesedIndex++)
+                    float2 beforePointValue;
+
+                    if(_LineVariant == 3)
                     {
-                        float2 actualPointValue = tex1D(_GraphsTex, procesedIndex*pointReversedAmount).xy; // Getting point xy values
-                        actualPointValue = denormalization(actualPointValue, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue); // Denormalizing values of point
                         
-                        //Checking if pixel is belong to point
-                        if(_PointShape == 1)
-                        isPoint = (isPoint != 0) ? isPoint : drawSquare(actualPointValue,i.uv,_PointSize);
-                        else if(_PointShape == 2)
-                        isPoint = (isPoint != 0) ? isPoint : drawCircle(actualPointValue,i.uv,_PointSize);
-
-                        if(isPoint != 0)
+                        int tmpProcesedIndex = procesedIndex;
+                        [loop]
+                        for(int pIndex = 0; pIndex < numberOfPointsInGraph; pIndex++, procesedIndex++)
                         {
-                            finalPixelColor = pointColorOfGraph;
-                            isColored = 1.0;
-                            return finalPixelColor;
+                            float2 actualPointValue = tex1D(_GraphsTex, procesedIndex*pointReversedAmount).xy; // Getting point xy values
+                            actualPointValue = denormalization(actualPointValue, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue); // Denormalizing values of point
+                            
+                            //Checking if pixel is belong to point
+                            if(_PointShape == 1)
+                            isPoint = (isPoint != 0) ? isPoint : drawSquare(actualPointValue,i.uv,_PointSize);
+                            else if(_PointShape == 2)
+                            isPoint = (isPoint != 0) ? isPoint : drawCircle(actualPointValue,i.uv,_PointSize);
+
+                            if(isPoint != 0)
+                            {
+                                finalPixelColor = pointColorOfGraph;
+                                isColored = 1.0;
+                                return finalPixelColor;
+                            }
                         }
+                        procesedIndex = tmpProcesedIndex;
 
-
-                        if(pIndex >= 0 && pIndex < (numberOfPointsInGraph-3) && _LineVariant == 3 && isColored != 1.0)
+                        [loop]
+                        for(int pIndex = 0; pIndex < numberOfPointsInGraph-1 ; pIndex++, procesedIndex++)
                         {
-                            float2 p0 = tex1D(_GraphsTex, procesedIndex*pointReversedAmount).xy; // Getting point xy values
-                            p0 = denormalization(p0, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
-                            float2 p1 = tex1D(_GraphsTex, (procesedIndex+1)*pointReversedAmount).xy; // Getting point xy values
+                            float2 p0;
+                            float2 p3;
+                            if(pIndex == 0)
+                            {
+                                p0 = float2(1.0,1.0); // Getting point xy values
+                                p0 = denormalization(p0, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
+
+                                p3 = tex1D(_GraphsTex, (procesedIndex+2)*pointReversedAmount).xy; // Getting point xy values
+                                p3 = denormalization(p3, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
+                            }
+                            else if(pIndex == (numberOfPointsInGraph - 2))
+                            {
+                                p0 = tex1D(_GraphsTex, (procesedIndex-1)*pointReversedAmount).xy; // Getting point xy values
+                                p0 = denormalization(p0, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
+
+                                p3 = float2(8.0,8.0); // Getting point xy values
+                                p3 = denormalization(p3, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
+                            }
+                            else
+                            {
+                                p0 = tex1D(_GraphsTex, (procesedIndex-1)*pointReversedAmount).xy; // Getting point xy values
+                                p0 = denormalization(p0, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
+
+                                p3 = tex1D(_GraphsTex, (procesedIndex+2)*pointReversedAmount).xy; // Getting point xy values
+                                p3 = denormalization(p3, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
+                            }
+
+                            float2 p1 = tex1D(_GraphsTex, (procesedIndex)*pointReversedAmount).xy; // Getting point xy values
                             p1 = denormalization(p1, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
-                            float2 p2 = tex1D(_GraphsTex, (procesedIndex+2)*pointReversedAmount).xy; // Getting point xy values
+                            float2 p2 = tex1D(_GraphsTex, (procesedIndex+1)*pointReversedAmount).xy; // Getting point xy values
                             p2 = denormalization(p2, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
-                            float2 p3 = tex1D(_GraphsTex, (procesedIndex+3)*pointReversedAmount).xy; // Getting point xy values
-                            p3 = denormalization(p3, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
-                            isLine = Spline(i.uv,p0,p1,p2,p3,_LineSize,100);
-                            beforePointValue = actualPointValue;
-                        }
-                        else if(pIndex >= 1)
-                        {   
-                            //Checking if pixel is belong to line
-                            if(_LineVariant == 1)
-                            isLine = Line(i.uv,beforePointValue,actualPointValue,_LineSize);
-                            else if (_LineVariant == 2)
-                            isLine = Line2(i.uv,beforePointValue,actualPointValue,_LineSize, isLine);
-                            beforePointValue = actualPointValue;
-                        }
-                        else
-                        {
-                            beforePointValue = actualPointValue;
-                        }
+                            
+                            if(!all(p0==p1 || p0 == p2 || p0 == p3 || p1 == p2 || p1 == p3 || p2 == p3))
+                            isLine = Spline(i.uv,p0,p1,p2,p3,_LineSize,20);
 
-                        if(isLine != 1.0 && isColored != 1.0 )
+
+                            if(isLine != 1.0)
+                            {
+                                finalPixelColor = lineColorOfGraph;
+                                isColored = 1.0;
+                                return finalPixelColor;
+                            }
+                            
+                        }
+                        procesedIndex++;
+                        
+                        
+                    }
+                    else
+                    {
+                        [loop]
+                        for(int pIndex = 0; pIndex < numberOfPointsInGraph ; pIndex++, procesedIndex++)
                         {
-                            finalPixelColor = lineColorOfGraph;
-                            isColored = 1.0;
-                            return finalPixelColor;
+                            float2 actualPointValue = tex1D(_GraphsTex, procesedIndex*pointReversedAmount).xy; // Getting point xy values
+                            actualPointValue = denormalization(actualPointValue, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue); // Denormalizing values of point
+                            
+                            //Checking if pixel is belong to point
+                            if(_PointShape == 1)
+                            isPoint = (isPoint != 0) ? isPoint : drawSquare(actualPointValue,i.uv,_PointSize);
+                            else if(_PointShape == 2)
+                            isPoint = (isPoint != 0) ? isPoint : drawCircle(actualPointValue,i.uv,_PointSize);
+
+                            if(isPoint != 0)
+                            {
+                                finalPixelColor = pointColorOfGraph;
+                                isColored = 1.0;
+                                return finalPixelColor;
+                            }
+
+
+                            if(pIndex >= 0 && pIndex < (numberOfPointsInGraph-3) && _LineVariant == 3 && isColored != 1.0)
+                            {
+                                float2 p0 = tex1D(_GraphsTex, procesedIndex*pointReversedAmount).xy; // Getting point xy values
+                                p0 = denormalization(p0, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
+                                float2 p1 = tex1D(_GraphsTex, (procesedIndex+1)*pointReversedAmount).xy; // Getting point xy values
+                                p1 = denormalization(p1, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
+                                float2 p2 = tex1D(_GraphsTex, (procesedIndex+2)*pointReversedAmount).xy; // Getting point xy values
+                                p2 = denormalization(p2, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
+                                float2 p3 = tex1D(_GraphsTex, (procesedIndex+3)*pointReversedAmount).xy; // Getting point xy values
+                                p3 = denormalization(p3, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
+                                isLine = Spline(i.uv,p0,p1,p2,p3,_LineSize,100);
+                                beforePointValue = actualPointValue;
+                            }
+                            else if(pIndex >= 1)
+                            {   
+                                //Checking if pixel is belong to line
+                                if(_LineVariant == 1)
+                                isLine = Line3(i.uv,beforePointValue,actualPointValue,_LineSize);
+                                else if (_LineVariant == 2)
+                                isLine = Line2(i.uv,beforePointValue,actualPointValue,_LineSize, isLine);
+                                beforePointValue = actualPointValue;
+                            }
+                            else
+                            {
+                                beforePointValue = actualPointValue;
+                            }
+
+                            if(isLine != 1.0)
+                            {
+                                finalPixelColor = lineColorOfGraph;
+                                isColored = 1.0;
+                                return finalPixelColor;
+                            }
                         }
                     }
                     
