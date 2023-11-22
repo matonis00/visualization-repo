@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using Unity.Mathematics;
 using static UnityEngine.Rendering.DebugUI;
+using UnityEngine.UIElements;
 
 
 public class ShaderDataMultiple : MonoBehaviour
@@ -96,7 +97,7 @@ public class ShaderDataMultiple : MonoBehaviour
             desireLength += graph.points.Distinct().ToArray().Length;
             desireLength += 3;
         }
-        Texture2D input = new Texture2D(desireLength, 1, TextureFormat.RGBA64, false);
+        Texture2D input = new Texture2D(desireLength, 1, TextureFormat.RGBAFloat, false);
         input.filterMode = FilterMode.Point;
         input.wrapMode = TextureWrapMode.Clamp;
         int index = 0;
@@ -114,6 +115,7 @@ public class ShaderDataMultiple : MonoBehaviour
              
             for (int j = 0; j < orderedPoints.Length; j++, index++)
             {
+                Debug.Log(normalizeValue(orderedPoints[j].x, minXPointValue, maxXPointValue));
                 input.SetPixel(index, 0, new Color(normalizeValue(orderedPoints[j].x,minXPointValue,maxXPointValue), normalizeValue(orderedPoints[j].y,minYPointValue,maxYPointValue), 1.0f,1.0f));
             }
         }
@@ -145,57 +147,51 @@ public class ShaderDataMultiple : MonoBehaviour
 
 
     //TODO REPAIR FOR MULTI
-    /*
-    public int GetClosestPiontIndex(float x, float y)
+    
+    public (int,int) GetClosestPiontIndex(float x, float y)
     {
         Vector2 point = new Vector2(x, y);
-        List<Vector2> points = new List<Vector2>();
-        foreach (Graph graph in graphs)
+        
+        double distance = double.MaxValue;
+        int graphIndex = 0;
+        int pointIndex = 0;
+        for (int i = 0; i < graphs.Length; i++)
         {
-            foreach(Vector2 pointinGraph in graph.points)
+            for (int j = 0;j < graphs[i].points.Length; j++)
             {
-                points.Add(pointinGraph);
+                if (Vector2.Distance(point, graphs[i].points[j]) < distance)
+                {
+                    distance = Vector2.Distance(point, graphs[i].points[j]);
+                    graphIndex = i;
+                    pointIndex = j;
+                }
             }
+
         }
+        Vector2 closestPoint = new Vector2(graphIndex, pointIndex);
 
-
-        double distance = Vector2.Distance(point, points[0]);
-        int index = 0;
-        for (int i = 1; i < points.Count; i++)
-        {
-            if (Vector2.Distance(point, points[i]) < distance)
-            {
-                distance = Vector2.Distance(point, points[i]);
-                index = i;
-            }
-        }
-
-        //Debug.Log("Koordynaty zalapania:" + point);
-        //Debug.Log("Koordynaty punktu:" + points[index]);
-        //Debug.Log("Dystans:" + distance);
-
-        return index;
+        return (graphIndex, pointIndex);
     }
-    */
+    
 
     public void ChangeScaleY(float scale)
     {
-        graphScaleOnY = math.remap(0, 1, graphScaleOnYMin, graphScaleOnYMax, scale);
+        graphScaleOnY = scale;
     }
 
     public void ChangeScaleX(float scale)
     {
-        graphScaleOnX = math.remap(0, 1, graphScaleOnXMin, graphScaleOnXMax, scale);
+        graphScaleOnX = scale;
     }
 
-    public void ChangeOffsetY(float scale)
+    public void ChangeOffsetY(float offset)
     {
-        graphOffsetOnY = math.remap(0, 1, graphOffsetOnYMin, graphOffsetOnYMax, scale);
+        graphOffsetOnY = offset;
     }
 
-    public void ChangeOffsetX(float scale)
+    public void ChangeOffsetX(float offset)
     {
-        graphOffsetOnX = math.remap(0, 1, graphOffsetOnXMin, graphOffsetOnXMax, scale);
+        graphOffsetOnX = offset;
     }
 
     public void CopyValuesFrom(ShaderDataMultiple input)

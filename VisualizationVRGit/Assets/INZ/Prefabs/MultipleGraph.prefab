@@ -369,7 +369,7 @@ MonoBehaviour:
   m_ClampedMotion: 1
   m_MaxAngle: -90
   m_MinAngle: -270
-  m_AngleIncrement: 0
+  m_AngleIncrement: 22.5
   m_PositionTrackedRadius: 0.075
   m_TwistSensitivity: 1.5
   m_OnValueChange:
@@ -422,6 +422,7 @@ GameObject:
   - component: {fileID: 4319661622437385491}
   - component: {fileID: 6066412839745163378}
   - component: {fileID: 762957476234879364}
+  - component: {fileID: 1790541239617405634}
   m_Layer: 0
   m_Name: MultipleGraph
   m_TagString: Untagged
@@ -529,30 +530,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 1550744417477165234}
-  graphOffsetOnX: -2
-  graphOffsetOnY: -2
+  graphOffsetOnX: -1
+  graphOffsetOnY: -1
   graphOffsetOnXMin: -6
   graphOffsetOnYMin: -6
   graphOffsetOnXMax: 6
   graphOffsetOnYMax: 6
-  graphScaleOnX: 16
-  graphScaleOnY: 16
-  graphScaleOnXMin: 4
-  graphScaleOnYMin: 4
-  graphScaleOnXMax: 16
-  graphScaleOnYMax: 16
+  graphScaleOnX: 15000
+  graphScaleOnY: 10
+  graphScaleOnXMin: 15
+  graphScaleOnYMin: 5
+  graphScaleOnXMax: 1.5e+9
+  graphScaleOnYMax: 15
   unitPerGridOnX: 1
   unitPerGridOnY: 1
   pointShape: 1
   pointColor: {r: 0, g: 0, b: 0, a: 1}
   pointSize: 0.2
-  minXPointValue: -1
-  maxXPointValue: 9
+  minXPointValue: 1
+  maxXPointValue: 1.5e+9
   minYPointValue: -1
   maxYPointValue: 9
   minPointAmount: 0
   maxPointAmount: 255
-  lineVariant: 1
+  lineVariant: 3
   lineColor: {r: 0, g: 0, b: 0, a: 1}
   lineSize: 0.2
   graphs:
@@ -562,12 +563,8 @@ MonoBehaviour:
     - {x: 1, y: 1}
     - {x: 2, y: 2}
     - {x: 3, y: 3}
-  - pointColor: {r: 0, g: 0.23838353, b: 1, a: 0}
-    lineColor: {r: 0.09775233, g: 1, b: 0, a: 0}
-    points:
-    - {x: 1, y: 3}
-    - {x: 2, y: 3}
-    - {x: 3, y: 3}
+    - {x: 4, y: 5}
+    - {x: 5, y: 7}
 --- !u!114 &762957476234879364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -584,6 +581,109 @@ MonoBehaviour:
   knobScaleY: {fileID: 778009648793253256}
   knobOffsetX: {fileID: 3343446743261742989}
   knobOffsetY: {fileID: 5578339047505283246}
+  simpleInteractable: {fileID: 1790541239617405634}
+--- !u!114 &1790541239617405634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1981333859521362783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a35f6cfbfba9b548aaa00d52cfe8a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_InteractionManager: {fileID: 0}
+  m_Colliders: []
+  m_InteractionLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_InteractionLayers:
+    m_Bits: 1
+  m_DistanceCalculationMode: 1
+  m_SelectMode: 0
+  m_FocusMode: 1
+  m_CustomReticle: {fileID: 0}
+  m_AllowGazeInteraction: 0
+  m_AllowGazeSelect: 0
+  m_OverrideGazeTimeToSelect: 0
+  m_GazeTimeToSelect: 0.5
+  m_OverrideTimeToAutoDeselectGaze: 0
+  m_TimeToAutoDeselectGaze: 3
+  m_AllowGazeAssistance: 0
+  m_FirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_HoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FirstFocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_LastFocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FocusExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Activated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Deactivated:
+    m_PersistentCalls:
+      m_Calls: []
+  m_StartingHoverFilters: []
+  m_StartingSelectFilters: []
+  m_StartingInteractionStrengthFilters: []
+  m_OnFirstHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnLastHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnHoverExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectEntered:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectExited:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnSelectCanceled:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnActivate:
+    m_PersistentCalls:
+      m_Calls: []
+  m_OnDeactivate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2989521240780614175
 GameObject:
   m_ObjectHideFlags: 0
@@ -1069,7 +1169,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 13, y: 13, z: 13}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6974097656770698085}

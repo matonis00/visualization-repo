@@ -105,8 +105,8 @@ Shader "Unlit/TestShaderMultiple"
                 return step(length(abs(position - uv)),  size );
             }
             
-            float drawSquare(float2 position, float2 uv, float size){
-                return step(distance(position.x,uv.x), size) * step(distance(position.y,uv.y), size);
+            float drawSquare(float2 position, float2 uv, float sizeX,float sizeY){
+                return step(distance(position.x,uv.x), sizeX) * step(distance(position.y,uv.y), sizeY);
             }
 
             
@@ -208,6 +208,7 @@ Shader "Unlit/TestShaderMultiple"
                 for (int i = 1; i <= subLines; i++) {
                     float2 b = splineInterpolation(p0, p1, p2, p3, float(i)*(1.0/float(subLines)));
                     curve = Line3(p,a,b,thickness);
+                    //curve = drawCircle(b,p,thickness);
                     if(curve != 1.0) return 0.0;
                     a = b;
                 }
@@ -240,20 +241,20 @@ Shader "Unlit/TestShaderMultiple"
             float4 frag (Interpolators i) : SV_Target
             {
                 //Calculating axis
-                float axisThickness = 0.1422;//(4.0 /450.0) *16.0;
+                float axisThickness = 0.1 ;//(4.0 /450.0) *16.0;
                 float axis = min(abs(i.uv.x), abs(i.uv.y));
                 axis = smoothstep(axisThickness -0.05, axisThickness,axis);
                 
                 //Calculating grid
                 float2 temp = abs(i.uv % _UnitPerGridX); // modulo co ile ma występowac kratka ->  co jedną jednostkę
-                float gridThickness = 0.0355;// (1.0/450.0) *16.0;
+                float gridThickness = 0.04 *_UnitPerGridX;// (1.0/450.0) *16.0;
                 float gridSize = 0.5 * _UnitPerGridX;
                 float gridX = gridSize - abs(temp.x - gridSize);
                 gridX = smoothstep(0.0,gridThickness,gridX);
 
 
                 temp = abs(i.uv % _UnitPerGridY); // modulo co ile ma występowac kratka ->  co jedną jednostkę
-                gridThickness = 0.0355;// (1.0/450.0) *16.0;
+                gridThickness = 0.04 * _UnitPerGridY;// (1.0/450.0) *16.0;
                 gridSize = 0.5 * _UnitPerGridY;
                 float gridY = gridSize -  abs(temp.y - gridSize);
                 gridY = smoothstep(0.0,gridThickness,gridY);
@@ -290,9 +291,10 @@ Shader "Unlit/TestShaderMultiple"
                             float2 actualPointValue = tex1D(_GraphsTex, procesedIndex*pointReversedAmount).xy; // Getting point xy values
                             actualPointValue = denormalization(actualPointValue, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue); // Denormalizing values of point
                             
+
                             //Checking if pixel is belong to point
                             if(_PointShape == 1)
-                            isPoint = (isPoint != 0) ? isPoint : drawSquare(actualPointValue,i.uv,_PointSize);
+                            isPoint = (isPoint != 0) ? isPoint : drawSquare(actualPointValue,i.uv,_PointSize ,_PointSize );
                             else if(_PointShape == 2)
                             isPoint = (isPoint != 0) ? isPoint : drawCircle(actualPointValue,i.uv,_PointSize);
 
@@ -312,7 +314,7 @@ Shader "Unlit/TestShaderMultiple"
                             float2 p3;
                             if(pIndex == 0)
                             {
-                                p0 = float2(1.0,1.0); // Getting point xy values
+                                p0 = float2(0.0,0.0); // Getting point xy values
                                 p0 = denormalization(p0, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
 
                                 p3 = tex1D(_GraphsTex, (procesedIndex+2)*pointReversedAmount).xy; // Getting point xy values
@@ -323,7 +325,7 @@ Shader "Unlit/TestShaderMultiple"
                                 p0 = tex1D(_GraphsTex, (procesedIndex-1)*pointReversedAmount).xy; // Getting point xy values
                                 p0 = denormalization(p0, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
 
-                                p3 = float2(8.0,8.0); // Getting point xy values
+                                p3 = float2(15000.0,15000.0); // Getting point xy values
                                 p3 = denormalization(p3, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
                             }
                             else
@@ -366,7 +368,7 @@ Shader "Unlit/TestShaderMultiple"
                             
                             //Checking if pixel is belong to point
                             if(_PointShape == 1)
-                            isPoint = (isPoint != 0) ? isPoint : drawSquare(actualPointValue,i.uv,_PointSize);
+                            isPoint = (isPoint != 0) ? isPoint : drawSquare(actualPointValue,i.uv,_PointSize,_PointSize);
                             else if(_PointShape == 2)
                             isPoint = (isPoint != 0) ? isPoint : drawCircle(actualPointValue,i.uv,_PointSize);
 
