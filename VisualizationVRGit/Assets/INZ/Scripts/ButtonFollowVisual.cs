@@ -37,9 +37,10 @@ public class ButtonFollowVisual : MonoBehaviour
 
             pokeAttachTransform = interactor.attachTransform;
             offset = visualTarget.position - pokeAttachTransform.position;
+            Debug.Log(offset);
 
             float pokeAngle = Vector3.Angle(offset, visualTarget.TransformDirection(localAxis));
-
+            Debug.Log(pokeAngle);
             if (pokeAngle < followAngleTreshold)
             {
                 isFollowing = true;

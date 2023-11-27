@@ -115,7 +115,7 @@ public class ShaderDataMultiple : MonoBehaviour
              
             for (int j = 0; j < orderedPoints.Length; j++, index++)
             {
-                Debug.Log(normalizeValue(orderedPoints[j].x, minXPointValue, maxXPointValue));
+                //Debug.Log(normalizeValue(orderedPoints[j].x, minXPointValue, maxXPointValue));
                 input.SetPixel(index, 0, new Color(normalizeValue(orderedPoints[j].x,minXPointValue,maxXPointValue), normalizeValue(orderedPoints[j].y,minYPointValue,maxYPointValue), 1.0f,1.0f));
             }
         }
