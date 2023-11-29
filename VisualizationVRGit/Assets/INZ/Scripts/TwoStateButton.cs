@@ -15,14 +15,14 @@ public class TwoStateButton : MonoBehaviour
     void Start()
     {
         interactable.selectEntered.AddListener(x => ChangeValue());
-        interactable.hoverExited.AddListener(x => ChangeColor());
+
     }
     public void ChangeValue()
     {
         value =!value;
         
     }
-    public void ChangeColor()
+    private void Update()
     {
         if (value)
         {

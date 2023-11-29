@@ -5,30 +5,40 @@ using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.XR.Content.Interaction;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class ScaleDescControll : MonoBehaviour
 {
-
-    public XRKnob knobScaleX;
+    public ShaderDataMultiple shaderData;
+    public RectTransform scaleDesc1Transform;
+    public RectTransform scaleDesc3Transform;
     public TextMeshProUGUI scaleDesc1;
     public TextMeshProUGUI scaleDesc2;
     public TextMeshProUGUI scaleDesc3;
     public TextMeshProUGUI scaleDescAxiX;
-    public String[] scaleDesc1Values = { "1ns", "10ns", "100ns", "1μs", "10μs", "100μs", "1ms", "10ms", "100ms"};
-    public String[] scaleDesc2Values = { "5ns", "50ns", "500ns", "5μs", "50μs", "500μs", "5ms", "50ms", "500ms"};
-    public String[] scaleDesc3Values = { "10ns", "100ns", "1μs", "10μs", "100μs", "1ms","10ms", "100ms", "1s"};
-    // Start is called before the first frame update
-    void Start()
-    {
-        knobScaleX.onValueChange.AddListener(ScaleDescAdjust);
-    }
 
-    private void ScaleDescAdjust(float arg0)
+    float scaleGraphElement = 19.5f;
+    //ON SCALE OR OFFSETCHANGE
+    void Update()
     {
-        int exponent = (int)math.remap(0, 1, 0, 8, knobScaleX.value);
-        scaleDesc1.text = scaleDesc1Values[exponent];
-        scaleDesc2.text = scaleDesc2Values[exponent];
-        scaleDesc3.text = scaleDesc3Values[exponent];
+        float sizeOfUnit = 19.5f / shaderData.graphScaleOnX;
+        float scale = shaderData.graphScaleOnX - 4;
+        
+        float offset = shaderData.graphOffsetOnX + 2f; //π
+        float startingText = offset / 8f;
+        float startingTextPosition = -(scaleGraphElement/2) + sizeOfUnit * 2;
+
+        float middleText = (offset + (scale / 2f)) / 8f;
+
+        float lastText = (offset + scale) / 8f;
+        float lastTextPosition = (scaleGraphElement / 2) - sizeOfUnit * 2;
+        
+        scaleDesc1.text = startingText + "π";
+        scaleDesc1Transform.localPosition = new Vector3(startingTextPosition, scaleDesc1Transform.localPosition.y, scaleDesc1Transform.localPosition.z);
+        scaleDesc2.text = middleText + "π";
+        scaleDesc3.text = lastText + "π";
+        scaleDesc3Transform.localPosition = new Vector3(lastTextPosition, scaleDesc3Transform.localPosition.y, scaleDesc3Transform.localPosition.z);
+
     }
 
 }

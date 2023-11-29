@@ -232,4 +232,12 @@ public class ShaderDataMultiple : MonoBehaviour
         return (value - minValue) / (maxValue - minValue);
     }
 
+
+    public void AddPointToGraph(int graphIndex, Vector2 point)
+    {
+        List<Vector2> list = graphs[graphIndex].points.ToList<Vector2>();
+        list.Add(point);
+        graphs[graphIndex].points = list.ToArray();
+        Debug.Log("Dodano punkt:" + point);
+    }
 }

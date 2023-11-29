@@ -12,16 +12,18 @@ using UnityEditor.Experimental.GraphView;
 public class GraphControll : MonoBehaviour
 {
     public XRKnob knobScaleX;
-    //public XRKnob knobScaleY;
-    //public XRKnob knobOffsetX;
-    //public XRKnob knobOffsetY;
     public XRSimpleInteractable buttonBackOffset;
     public XRSimpleInteractable buttonNextOffset;
+    public XRSimpleInteractable buttonModeChange;
+    public GameObject buttonModeChangeGO;
+    public GameObject buttonModeChangeDescGO;
+    public XRSimpleInteractable simpleInteractable;
+
     MeshCollider meshCollider;
     IXRSelectInteractor xrInteractor;
-    public XRSimpleInteractable simpleInteractable;
+    
     ShaderDataMultiple shaderData;
-
+    bool createMode = false;
     bool attached = false;
     int grapchIndex;
     int pointIndex;
@@ -41,15 +43,7 @@ public class GraphControll : MonoBehaviour
         simpleInteractable.selectExited.AddListener(DisAttach);
 
         knobScaleX.onValueChange.AddListener(ScaleChangeX);
-       // knobScaleY.onValueChange.AddListener(ScaleChangeY);
-        //knobOffsetX.onValueChange.AddListener(OffsetChangeX);
-        //knobOffsetY.onValueChange.AddListener(OffsetChangeY);
-
-        //knobScaleX.value = math.remap(shaderData.graphScaleOnXMin, shaderData.graphScaleOnXMax, 0, 1, shaderData.graphScaleOnX);
-       // knobScaleY.value = math.remap(shaderData.graphScaleOnYMin, shaderData.graphScaleOnYMax, 0, 1, shaderData.graphScaleOnY);
-        //knobOffsetX.value = math.remap(shaderData.graphOffsetOnXMin, shaderData.graphOffsetOnXMax, 0, 1, shaderData.graphOffsetOnX);
-       // knobOffsetY.value = math.remap(shaderData.graphOffsetOnYMin, shaderData.graphOffsetOnYMax, 0, 1, shaderData.graphOffsetOnY);
-
+     
         nowMinX = shaderData.graphOffsetOnX;
         nowMaxX = shaderData.graphOffsetOnX + shaderData.graphScaleOnX;
         nowMinY = shaderData.graphOffsetOnY;
@@ -58,8 +52,14 @@ public class GraphControll : MonoBehaviour
         buttonBackOffset.selectEntered.AddListener(OffsetBack);
         buttonNextOffset.selectEntered.AddListener(OffsetNext);
 
+        buttonModeChange.selectEntered.AddListener(ChangeMode);
+        buttonModeChange.GetComponent<TwoStateButton>().value = createMode;
 
+    }
 
+    private void ChangeMode(SelectEnterEventArgs arg0)
+    {
+        createMode = !createMode;
     }
 
     private void OffsetNext(SelectEnterEventArgs arg0)
@@ -106,7 +106,6 @@ public class GraphControll : MonoBehaviour
         int exponent = (int)math.remap(0, 1, 1, 6, knobScaleX.value);
         float newScale = 4 + math.pow(2, exponent);
 
-       // newScale = math.remap(0, 1, shaderData.graphScaleOnXMin, shaderData.graphScaleOnXMax, knobScaleX.value);
        if(shaderData.graphScaleOnX <=12)
         {
             float temp = (shaderData.graphOffsetOnX + 2);
@@ -117,24 +116,8 @@ public class GraphControll : MonoBehaviour
         }
 
         shaderData.ChangeScaleX(newScale);
-        //shaderData.unitPerGridOnX = newScale / 15;
     }
-    //private void ScaleChangeY(float arg0)
-    //{
-    //    float newScale =  math.remap(0, 1, shaderData.graphScaleOnYMin, shaderData.graphScaleOnYMax, knobScaleY.value);
-    //    shaderData.ChangeScaleY(newScale);
-    //}
-    //private void OffsetChangeX(float arg0)
-    //{
-    //    float newOffset = math.remap(0, 1, shaderData.graphOffsetOnXMin, shaderData.graphOffsetOnXMax, knobOffsetX.value);
-    //    shaderData.ChangeOffsetX(newOffset);
-    //}
-    //private void OffsetChangeY(float arg0)
-    //{
-    //    float newOffset = math.remap(0, 1, shaderData.graphOffsetOnYMin, shaderData.graphOffsetOnYMax, knobOffsetY.value);
-    //    shaderData.ChangeOffsetY(newOffset);
-    //}
-
+ 
     private void DisAttach(SelectExitEventArgs arg0)
     {
         attached = false;
@@ -149,8 +132,18 @@ public class GraphControll : MonoBehaviour
 
         (grapchIndex, pointIndex) = shaderData.GetClosestPiontIndex((float)interactorX, (float)interactorY);
 
-        xrInteractor = arg0.interactorObject;    
-        attached = true;
+        xrInteractor = arg0.interactorObject;
+
+        if (createMode)
+        {
+            shaderData.AddPointToGraph(0,new Vector2((float)interactorX, (float)interactorY));
+        }
+        else
+        {
+            attached = true;
+        }
+
+       
         
 
     }
@@ -171,6 +164,19 @@ public class GraphControll : MonoBehaviour
 
             shaderData.graphs[grapchIndex].points[pointIndex].x = (float)interactorX;
             shaderData.graphs[grapchIndex].points[pointIndex].y = (float)interactorY;
+        }
+
+        if(shaderData.graphs.Length >1 ) 
+        {
+            createMode = false;
+            buttonModeChange.GetComponent<TwoStateButton>().value = false;
+            buttonModeChangeGO.SetActive(false);
+            buttonModeChangeDescGO.SetActive(false);
+        }
+        else
+        {
+            buttonModeChangeGO.SetActive(true);
+            buttonModeChangeDescGO.SetActive(true);
         }
     }
 

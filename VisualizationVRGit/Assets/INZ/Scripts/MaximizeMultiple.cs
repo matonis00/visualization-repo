@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ public class MaximizeMultiple : MonoBehaviour
     public XRSimpleInteractable[] pushButtons;
     public ShaderDataMultiple shaderDataMultiple;
     public bool multipleGraphShown =false;
-
+    List<int> indexesList;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +22,12 @@ public class MaximizeMultiple : MonoBehaviour
         {
             pushButton.selectEntered.AddListener(x => MaximizeSection());
         }
-        
+        AddListenersToGridElements();
+    }
+
+    public void AddListenersToGridElements()
+    {
+        throw new NotImplementedException();
     }
 
 

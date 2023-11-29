@@ -32,7 +32,7 @@ public class GrabingPoint : MonoBehaviour
     {
         simpleInteractable = GetComponent<XRSimpleInteractable>();
         shaderData = GetComponent<ShaderData>();
-        pushButton.selectEntered.AddListener(ChangeMode);
+        
         simpleInteractable.selectEntered.AddListener(Attach);
         simpleInteractable.selectExited.AddListener(DisAttach);
 
@@ -45,6 +45,8 @@ public class GrabingPoint : MonoBehaviour
         knobScaleY.value = math.remap( shaderData.graphScaleOnYMin, shaderData.graphScaleOnYMax, 0, 1, shaderData.graphScaleOnY);
         knobOffsetX.value = math.remap(shaderData.graphOffsetOnXMin, shaderData.graphOffsetOnXMax, 0, 1, shaderData.graphOffsetOnX);
         knobOffsetY.value = math.remap(shaderData.graphOffsetOnYMin, shaderData.graphOffsetOnYMax, 0, 1, shaderData.graphOffsetOnY);
+
+        pushButton.selectEntered.AddListener(ChangeMode);
         pushButton.GetComponent<TwoStateButton>().value = create;
 
         nowMinX = shaderData.graphOffsetOnX;
