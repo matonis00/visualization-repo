@@ -166,7 +166,7 @@ public class GraphControll : MonoBehaviour
             shaderData.graphs[grapchIndex].points[pointIndex].y = (float)interactorY;
         }
 
-        if(shaderData.graphs.Length >1 ) 
+        if(shaderData.graphs.Length != 1 ) 
         {
             createMode = false;
             buttonModeChange.GetComponent<TwoStateButton>().value = false;
@@ -179,5 +179,11 @@ public class GraphControll : MonoBehaviour
             buttonModeChangeDescGO.SetActive(true);
         }
     }
+
+    public ShaderDataMultiple GetShaderData()
+    {
+        return shaderData;
+    }
+
 
 }

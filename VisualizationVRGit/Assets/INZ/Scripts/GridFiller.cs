@@ -10,16 +10,20 @@ public class GridFiller : MonoBehaviour
 {
     public GameObject sectionPrefab;
     public TMP_Dropdown dropdown;
-    public GameObject sectionToShow;
-    public GameObject scetionToHide;
+    public MaximizeMultiple multipleGraphController;
+    //public GameObject sectionToShow;
+    //public GameObject scetionToHide;
     // Start is called before the first frame update
     private void Start()
     {
         dropdown.onValueChanged.AddListener(Fill);
+        
+
     }
 
     private void Fill(int arg0)
     {
+        
         Debug.Log(arg0);
         foreach (Transform child in transform)
         {
@@ -29,11 +33,12 @@ public class GridFiller : MonoBehaviour
         {
             GameObject child = Instantiate(sectionPrefab,transform.position,Quaternion.identity,transform);
             child.transform.Rotate(0, 180, 0);
-            Maximize childSetUp = child.GetComponent<Maximize>();
-            childSetUp.sectionToShow = sectionToShow;
-            childSetUp.scetionToHide = scetionToHide;
-            childSetUp.elementId = i;
+            //Maximize childSetUp = child.GetComponent<Maximize>();
+            //childSetUp.sectionToShow = sectionToShow;
+            //childSetUp.scetionToHide = scetionToHide;
+            //childSetUp.elementId = i;
         }
+        multipleGraphController.AddListenersToGridElements();
     }
 
 }
