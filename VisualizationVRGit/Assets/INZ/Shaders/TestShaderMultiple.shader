@@ -315,7 +315,7 @@ Shader "Unlit/TestShaderMultiple"
                             if(pIndex == 0)
                             {
                                 p0 = float2(0.0,0.0); // Getting point xy values
-                                p0 = denormalization(p0, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
+                                //p0 = denormalization(p0, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
 
                                 p3 = tex1D(_GraphsTex, (procesedIndex+2)*pointReversedAmount).xy; // Getting point xy values
                                 p3 = denormalization(p3, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
@@ -325,8 +325,10 @@ Shader "Unlit/TestShaderMultiple"
                                 p0 = tex1D(_GraphsTex, (procesedIndex-1)*pointReversedAmount).xy; // Getting point xy values
                                 p0 = denormalization(p0, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
 
-                                p3 = float2(15000.0,15000.0); // Getting point xy values
+                                float p2X = tex1D(_GraphsTex, (procesedIndex+1)*pointReversedAmount).x;
+                                p3 = float2(p2X,0.0); // Getting point xy values
                                 p3 = denormalization(p3, _MinXValue, _MaxXValue, _MinYValue,_MaxYValue);
+                                p3 = float2(p3.x+1.0,0.0);
                             }
                             else
                             {

@@ -15,18 +15,12 @@ public class Maximize : MonoBehaviour
     public int elementId = 0;
     public bool get = false;
     public ShaderData shaderData;
-   // public XRKnob timeKnob;
-   // public TextAsset jsonFile;
 
     // Start is called before the first frame update
     void Start()
     {
         pushButton.selectEntered.AddListener(x => MaximizeSection());
-       /* Configuration configuration = Configuration.CreateFromJSON(jsonFile.text);
-        Debug.Log(configuration.mass);
-        Debug.Log(configuration.charge);
-        Debug.Log(configuration.nuclear_spin);
-        Debug.Log(configuration.default_sublevel_selection[0]);*/
+
     }
 
 

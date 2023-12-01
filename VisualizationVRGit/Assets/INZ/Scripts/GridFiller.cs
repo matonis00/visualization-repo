@@ -23,16 +23,17 @@ public class GridFiller : MonoBehaviour
 
     private void Fill(int arg0)
     {
-        
+        int numberOfElements = arg0 * 3 + 1;
         Debug.Log(arg0);
         foreach (Transform child in transform)
         {
             GameObject.Destroy(child.gameObject);
         }
-        for(int i = 0;i<arg0*3;i++) 
+        for(int i = 0;i< numberOfElements; i++) 
         {
             GameObject child = Instantiate(sectionPrefab,transform.position,Quaternion.identity,transform);
             child.transform.Rotate(0, 180, 0);
+            child.GetComponentInChildren<ShaderDataMultiple>().graphs[0].lineColor = new Color((float)i / numberOfElements, 0, (float)(numberOfElements- i) / numberOfElements, 1);
             //Maximize childSetUp = child.GetComponent<Maximize>();
             //childSetUp.sectionToShow = sectionToShow;
             //childSetUp.scetionToHide = scetionToHide;
