@@ -12,6 +12,9 @@ public class ScaleDescControll : MonoBehaviour
     public ShaderDataMultiple shaderData;
     public RectTransform scaleDesc1Transform;
     public RectTransform scaleDesc3Transform;
+    public RectTransform scaleDescY0Transform;
+    public RectTransform scaleDescY1Transform;
+
     public TextMeshProUGUI scaleDesc1;
     public TextMeshProUGUI scaleDesc2;
     public TextMeshProUGUI scaleDesc3;
@@ -38,6 +41,22 @@ public class ScaleDescControll : MonoBehaviour
         scaleDesc2.text = middleText + "π";
         scaleDesc3.text = lastText + "π";
         scaleDesc3Transform.localPosition = new Vector3(lastTextPosition, scaleDesc3Transform.localPosition.y, scaleDesc3Transform.localPosition.z);
+
+        float yTextPosition ;
+        if (offset == 0  ) {
+            yTextPosition = -(scaleGraphElement / 2) + sizeOfUnit * 1.5f;
+        }
+        else if( offset ==1)
+        {
+            yTextPosition = -(scaleGraphElement / 2) + sizeOfUnit * 0.5f;
+        }
+        else
+        {
+            yTextPosition = -(scaleGraphElement / 2) + sizeOfUnit * 0.25f; ;
+        }
+
+        scaleDescY0Transform.localPosition = new Vector3(yTextPosition, scaleDescY0Transform.localPosition.y, scaleDescY0Transform.localPosition.z);
+        scaleDescY1Transform.localPosition = new Vector3(yTextPosition, scaleDescY1Transform.localPosition.y, scaleDescY1Transform.localPosition.z);
 
     }
 
