@@ -7,6 +7,7 @@ using UnityEngine;
 using Unity.Mathematics;
 using static UnityEngine.Rendering.DebugUI;
 using UnityEngine.UIElements;
+using static ShaderDataMultiple;
 
 
 public class ShaderDataMultiple : MonoBehaviour
@@ -87,6 +88,7 @@ public class ShaderDataMultiple : MonoBehaviour
 
 
         materialPB = new MaterialPropertyBlock();
+        FromJson(ToJson());
     }
     void Update()
     {
@@ -239,5 +241,15 @@ public class ShaderDataMultiple : MonoBehaviour
         list.Add(point);
         graphs[graphIndex].points = list.ToArray();
         Debug.Log("Dodano punkt:" + point);
+    }
+
+    public string ToJson()
+    {
+        string json = JsonHelper.ToJson(graphs,true);
+        return json;
+    }
+    public void FromJson(string json)
+    {
+        graphs = JsonHelper.FromJson<Graph>(json);
     }
 }
