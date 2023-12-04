@@ -17,7 +17,8 @@ public class GridFiller : MonoBehaviour
     private void Start()
     {
         dropdown.onValueChanged.AddListener(Fill);
-        
+        foreach (var item in dropdown.options)
+        Debug.Log(item.text);
 
     }
 
