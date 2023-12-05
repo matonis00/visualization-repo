@@ -1919,6 +1919,16 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6066412839745163378, guid: 4ee7740d061e55c4db032289d0e89565,
+        type: 3}
+      propertyPath: maxYPointValue
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066412839745163378, guid: 4ee7740d061e55c4db032289d0e89565,
+        type: 3}
+      propertyPath: minYPointValue
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6364794479075207270, guid: 4ee7740d061e55c4db032289d0e89565,
         type: 3}
       propertyPath: m_SortingLayer
