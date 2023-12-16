@@ -532,25 +532,25 @@ MonoBehaviour:
   meshRenderer: {fileID: 1550744417477165234}
   graphOffsetOnX: -2
   graphOffsetOnY: -1
-  graphOffsetOnXMin: -6
-  graphOffsetOnYMin: -6
-  graphOffsetOnXMax: 6
-  graphOffsetOnYMax: 6
+  graphOffsetOnXMin: -2
+  graphOffsetOnYMin: -1
+  graphOffsetOnXMax: 798
+  graphOffsetOnYMax: 1
   graphScaleOnX: 20
   graphScaleOnY: 10
-  graphScaleOnXMin: 15
-  graphScaleOnYMin: 5
-  graphScaleOnXMax: 100
-  graphScaleOnYMax: 15
+  graphScaleOnXMin: 6
+  graphScaleOnYMin: 1
+  graphScaleOnXMax: 68
+  graphScaleOnYMax: 20
   unitPerGridOnX: 1
   unitPerGridOnY: 1
   pointShape: 1
   pointColor: {r: 0, g: 0, b: 0, a: 1}
   pointSize: 0.2
-  minXPointValue: 1
+  minXPointValue: 0
   maxXPointValue: 1.5e+9
-  minYPointValue: -1
-  maxYPointValue: 9
+  minYPointValue: 0
+  maxYPointValue: 8
   minPointAmount: 0
   maxPointAmount: 255
   lineVariant: 3

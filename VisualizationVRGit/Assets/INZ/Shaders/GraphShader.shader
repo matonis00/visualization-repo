@@ -1,4 +1,4 @@
-Shader "Unlit/TestShaderMultiple"
+Shader "Unlit/GraphShader"
 {
     Properties
     {
