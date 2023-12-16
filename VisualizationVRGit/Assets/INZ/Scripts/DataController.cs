@@ -9,9 +9,7 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
-using static DataController;
 using static ShaderDataMultiple;
-using static UnityEngine.Rendering.DebugUI;
 
 public class DataController : MonoBehaviour
 {
@@ -60,6 +58,7 @@ public class DataController : MonoBehaviour
 
     void Start()
     {
+
         dropdownIon.value = 1;
         buttonSave.selectEntered.AddListener(x => SaveIon());
         buttonExport.selectEntered.AddListener(x => ExportIon());

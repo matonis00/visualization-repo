@@ -19,7 +19,7 @@ public class GridFiller : MonoBehaviour
     private void Start()
     {
         dropdown.onValueChanged.AddListener(Fill);
-        Fill(dropdown.value);
+        //Fill(dropdown.value);
     }
 
     private void Fill(int arg0)
@@ -42,7 +42,7 @@ public class GridFiller : MonoBehaviour
         for(int i = 0;i< numberOfElements; i++) 
         {
             GameObject child = Instantiate(sectionPrefab,transform.position,Quaternion.identity,transform);
-            child.transform.Rotate(0, 180, 0);
+            //child.transform.Rotate(0, 180, 0);
             child.GetComponentInChildren<ShaderDataMultiple>().graphs[0].lineColor = new Color((float)i / numberOfElements, 0, (float)(numberOfElements- i) / numberOfElements, 1);
             if(saveData != null)
             {

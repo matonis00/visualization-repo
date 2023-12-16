@@ -88,7 +88,6 @@ public class ShaderDataMultiple : MonoBehaviour
 
 
         materialPB = new MaterialPropertyBlock();
-        FromJson(ToJson());
     }
     void Update()
     {
@@ -243,13 +242,5 @@ public class ShaderDataMultiple : MonoBehaviour
         Debug.Log("Dodano punkt:" + point);
     }
 
-    public string ToJson()
-    {
-        string json = JsonHelper.ToJson(graphs,true);
-        return json;
-    }
-    public void FromJson(string json)
-    {
-        graphs = JsonHelper.FromJson<Graph>(json);
-    }
+
 }
