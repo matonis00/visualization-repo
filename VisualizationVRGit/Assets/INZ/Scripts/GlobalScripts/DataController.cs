@@ -30,13 +30,10 @@ public class DataController : MonoBehaviour
     void Start()
     {
 
-        dropdownIon.value = 1;
+        dropdownIon.value = 0;
         buttonSave.selectEntered.AddListener(x => SaveIon());
         buttonExport.selectEntered.AddListener(x => ExportIon());
         InitializeDropdownIon();
-        //ExportIon();
-        //SaveIon();
-
     }
     public bool CheckIfsaved(string nameOfIon)
     {
@@ -116,8 +113,8 @@ public class DataController : MonoBehaviour
             File.WriteAllText(pathToJuliaScript, julliaScript);
             File.WriteAllText(pathToIonFile, outputJSON);
             //Add Option to Dropdown
-            if (buttonNewIon.value) AddDropdownIon(nameOfIon, exportData.lasers.Count);
-            else ReloadDropdownIon(nameOfIon);
+            //if (buttonNewIon.value) AddDropdownIon(nameOfIon, exportData.lasers.Count);
+            //else ReloadDropdownIon(nameOfIon);
         }
         else
         {

@@ -1,5 +1,5 @@
 include("D:/GIT/INZ/VisualizationRepo/VisualizationVRGit/Assets/INZ/Scripts/laserValueBaseScript.jl")
-ionFile = "D:/GIT/INZ/VisualizationRepo/VisualizationVRGit/Assets/INZ/Data/EXPORT/kol/Ion.json"
+ionFile = "D:/GIT/INZ/VisualizationRepo/VisualizationVRGit/Assets/INZ/Data/EXPORT/Nowa/Ion.json"
 function Laser1(timeValue::Float64)
     laserIndex = 1
     return laserValue(laserIndex,timeValue,ionFile)
@@ -18,9 +18,5 @@ function Laser4(timeValue::Float64)
 end
 function Laser5(timeValue::Float64)
     laserIndex = 5
-    return laserValue(laserIndex,timeValue,ionFile)
-end
-function Laser6(timeValue::Float64)
-    laserIndex = 6
     return laserValue(laserIndex,timeValue,ionFile)
 end
