@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class Laser
+public struct Laser
 {
     public Vector2[] points;
 }
