@@ -10,7 +10,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class DataController : MonoBehaviour
+public class InOutDataController : MonoBehaviour
 {
     public GameObject gridSection;
     public XRSimpleInteractable buttonSave;
@@ -27,7 +27,7 @@ public class DataController : MonoBehaviour
     public List<IonData> ionData;
 
     
-    void Start()
+    void Awake()
     {
 
         dropdownIon.value = 0;
@@ -71,7 +71,7 @@ public class DataController : MonoBehaviour
         string pathToIonDirectory = pathToExport + "/" + nameOfIon;
         string pathToIonFile = pathToIonDirectory + "/" + "Ion.json";
         float piTimeValue = float.Parse(inputPitime.text) * (float)Math.Pow(10, -3 * (dropdownPitimeUnit.value + 1));
-        List<ShaderDataMultiple> data = gridSection.GetComponentsInChildren<ShaderDataMultiple>().ToList();
+        List<GraphShaderData> data = gridSection.GetComponentsInChildren<GraphShaderData>().ToList();
         
         ExportData exportData = new ExportData();
         exportData.IonName = nameOfIon;
@@ -163,7 +163,7 @@ public class DataController : MonoBehaviour
         float piTimeValue = float.Parse(inputPitime.text) * (float)Math.Pow(10, -3 * (dropdownPitimeUnit.value + 1));
 
         
-        List<ShaderDataMultiple> data = gridSection.GetComponentsInChildren<ShaderDataMultiple>().ToList();
+        List<GraphShaderData> data = gridSection.GetComponentsInChildren<GraphShaderData>().ToList();
         List<Graph> list = new List<Graph>();
         foreach (var graph in data)
         {

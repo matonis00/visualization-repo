@@ -4,13 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using Unity.Mathematics;
-using static UnityEngine.Rendering.DebugUI;
-using UnityEngine.UIElements;
-using static ShaderDataMultiple;
 
 
-public class ShaderDataMultiple : MonoBehaviour
+public class GraphShaderData : MonoBehaviour
 {
 
 
@@ -189,7 +185,7 @@ public class ShaderDataMultiple : MonoBehaviour
         graphOffsetOnX = offset;
     }
 
-    public void CopyValuesFrom(ShaderDataMultiple input)
+    public void CopyValuesFrom(GraphShaderData input)
     {
         graphOffsetOnX = input.graphOffsetOnX;
         graphOffsetOnXMin = input.graphOffsetOnXMin;

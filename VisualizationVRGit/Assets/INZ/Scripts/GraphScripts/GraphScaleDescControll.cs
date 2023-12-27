@@ -7,9 +7,9 @@ using UnityEngine;
 using UnityEngine.XR.Content.Interaction;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class ScaleDescControll : MonoBehaviour
+public class GraphScaleDescControll : MonoBehaviour
 {
-    public ShaderDataMultiple shaderData;
+    public GraphShaderData shaderData;
     public RectTransform scaleDesc1Transform;
     public RectTransform scaleDesc3Transform;
     public RectTransform scaleDescY0Transform;
@@ -21,7 +21,6 @@ public class ScaleDescControll : MonoBehaviour
     public TextMeshProUGUI scaleDescAxiX;
 
     float scaleGraphElement = 19.5f;
-    //ON SCALE OR OFFSETCHANGE
     void Update()
     {
         float sizeOfUnit = 19.5f / shaderData.graphScaleOnX;

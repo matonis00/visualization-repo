@@ -5,8 +5,6 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using Unity.Mathematics;
 using UnityEngine.XR.Content.Interaction;
-using UnityEngine.UIElements;
-using UnityEditor.Experimental.GraphView;
 
 
 public class GraphControll : MonoBehaviour
@@ -22,7 +20,7 @@ public class GraphControll : MonoBehaviour
     MeshCollider meshCollider;
     IXRSelectInteractor xrInteractor;
     
-    ShaderDataMultiple shaderData;
+    GraphShaderData graphShaderData;
     bool createMode = false;
     bool attached = false;
     int grapchIndex;
@@ -37,17 +35,17 @@ public class GraphControll : MonoBehaviour
     {
         simpleInteractable = GetComponent<XRSimpleInteractable>();
         meshCollider = GetComponent<MeshCollider>();
-        shaderData = GetComponent<ShaderDataMultiple>();
+        graphShaderData = GetComponent<GraphShaderData>();
 
         simpleInteractable.selectEntered.AddListener(Attach);
         simpleInteractable.selectExited.AddListener(DisAttach);
 
         knobScaleX.onValueChange.AddListener(ScaleChangeX);
      
-        nowMinX = shaderData.graphOffsetOnX;
-        nowMaxX = shaderData.graphOffsetOnX + shaderData.graphScaleOnX;
-        nowMinY = shaderData.graphOffsetOnY;
-        nowMaxY = shaderData.graphOffsetOnY + shaderData.graphScaleOnY;
+        nowMinX = graphShaderData.graphOffsetOnX;
+        nowMaxX = graphShaderData.graphOffsetOnX + graphShaderData.graphScaleOnX;
+        nowMinY = graphShaderData.graphOffsetOnY;
+        nowMaxY = graphShaderData.graphOffsetOnY + graphShaderData.graphScaleOnY;
 
         buttonBackOffset.selectEntered.AddListener(OffsetBack);
         buttonNextOffset.selectEntered.AddListener(OffsetNext);
@@ -65,39 +63,39 @@ public class GraphControll : MonoBehaviour
     private void OffsetNext(SelectEnterEventArgs arg0)
     {
         int addition = 16;
-        if (shaderData.graphScaleOnX == 12)
+        if (graphShaderData.graphScaleOnX == 12)
         {
             addition = 8;
         }
-        else if(shaderData.graphScaleOnX == 8)
+        else if(graphShaderData.graphScaleOnX == 8)
         {
             addition = 4;
         }
-        else if(shaderData.graphScaleOnX == 6)
+        else if(graphShaderData.graphScaleOnX == 6)
         {
             addition = 2;
         }
-        float newOffset = shaderData.graphOffsetOnX + addition;
-        shaderData.ChangeOffsetX(newOffset);
+        float newOffset = graphShaderData.graphOffsetOnX + addition;
+        graphShaderData.ChangeOffsetX(newOffset);
     }
 
     private void OffsetBack(SelectEnterEventArgs arg0)
     {
         int addition = 16;
-        if (shaderData.graphScaleOnX == 12)
+        if (graphShaderData.graphScaleOnX == 12)
         {
             addition = 8;
         }
-        else if (shaderData.graphScaleOnX == 8)
+        else if (graphShaderData.graphScaleOnX == 8)
         {
             addition = 4;
         }
-        else if (shaderData.graphScaleOnX == 6)
+        else if (graphShaderData.graphScaleOnX == 6)
         {
             addition = 2;
         }
-        float newOffset = shaderData.graphOffsetOnX - addition;
-        if(newOffset >= -2)shaderData.ChangeOffsetX(newOffset);
+        float newOffset = graphShaderData.graphOffsetOnX - addition;
+        if(newOffset >= -2)graphShaderData.ChangeOffsetX(newOffset);
     }
 
     private void ScaleChangeX(float arg0)
@@ -106,16 +104,16 @@ public class GraphControll : MonoBehaviour
         int exponent = (int)math.remap(0, 1, 1, 6, knobScaleX.value);
         float newScale = 4 + math.pow(2, exponent);
 
-       if(shaderData.graphScaleOnX <=12)
+       if(graphShaderData.graphScaleOnX <=12)
         {
-            float temp = (shaderData.graphOffsetOnX + 2);
+            float temp = (graphShaderData.graphOffsetOnX + 2);
             //Correction of offset
             if (temp % (newScale-4) != 0)
-                shaderData.graphOffsetOnX = shaderData.graphOffsetOnX - temp;
+                graphShaderData.graphOffsetOnX = graphShaderData.graphOffsetOnX - temp;
 
         }
 
-        shaderData.ChangeScaleX(newScale);
+        graphShaderData.ChangeScaleX(newScale);
     }
  
     private void DisAttach(SelectExitEventArgs arg0)
@@ -130,13 +128,13 @@ public class GraphControll : MonoBehaviour
         double interactorX = math.remap(-0.5f, 0.5f, nowMinX, nowMaxX, transform.InverseTransformPoint(inteactionPoint).x);
         double interactorY = math.remap(-0.5f, 0.5f, nowMinY, nowMaxY, transform.InverseTransformPoint(inteactionPoint).y);
 
-        (grapchIndex, pointIndex) = shaderData.GetClosestPiontIndex((float)interactorX, (float)interactorY);
+        (grapchIndex, pointIndex) = graphShaderData.GetClosestPiontIndex((float)interactorX, (float)interactorY);
 
         xrInteractor = arg0.interactorObject;
 
         if (createMode)
         {
-            shaderData.AddPointToGraph(0,new Vector2((float)interactorX, (float)interactorY));
+            graphShaderData.AddPointToGraph(0,new Vector2((float)interactorX, (float)interactorY));
         }
         else
         {
@@ -150,10 +148,10 @@ public class GraphControll : MonoBehaviour
 
     void Update()
     {
-        nowMinX = shaderData.graphOffsetOnX;
-        nowMaxX = shaderData.graphOffsetOnX + shaderData.graphScaleOnX;
-        nowMinY = shaderData.graphOffsetOnY;
-        nowMaxY = shaderData.graphOffsetOnY + shaderData.graphScaleOnY;
+        nowMinX = graphShaderData.graphOffsetOnX;
+        nowMaxX = graphShaderData.graphOffsetOnX + graphShaderData.graphScaleOnX;
+        nowMinY = graphShaderData.graphOffsetOnY;
+        nowMaxY = graphShaderData.graphOffsetOnY + graphShaderData.graphScaleOnY;
 
         if (attached)
         {
@@ -162,11 +160,11 @@ public class GraphControll : MonoBehaviour
             double interactorY = math.remap(-0.5f, 0.5f, nowMinY, nowMaxY, transform.InverseTransformPoint(inteactionPoint).y);
 
 
-            shaderData.graphs[grapchIndex].points[pointIndex].x = (float)interactorX;
-            shaderData.graphs[grapchIndex].points[pointIndex].y = (float)interactorY;
+            graphShaderData.graphs[grapchIndex].points[pointIndex].x = (float)interactorX;
+            graphShaderData.graphs[grapchIndex].points[pointIndex].y = (float)interactorY;
         }
 
-        if(shaderData.graphs.Length != 1 ) 
+        if(graphShaderData.graphs.Length != 1 ) 
         {
             createMode = false;
             buttonModeChange.GetComponent<TwoStateButton>().value = false;
@@ -180,9 +178,9 @@ public class GraphControll : MonoBehaviour
         }
     }
 
-    public ShaderDataMultiple GetShaderData()
+    public GraphShaderData GetShaderData()
     {
-        return shaderData;
+        return graphShaderData;
     }
 
 

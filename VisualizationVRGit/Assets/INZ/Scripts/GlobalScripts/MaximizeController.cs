@@ -6,14 +6,12 @@ using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.XR.Interaction.Toolkit;
-using static ShaderDataMultiple;
-using static System.Collections.Specialized.BitVector32;
 
-public class MaximizeMultiple : MonoBehaviour
+public class MaximizeController : MonoBehaviour
 {
     public GameObject multipleGraphSection;
     public GameObject gridSection;
-    public ShaderDataMultiple shaderDataMultiple;
+    public GraphShaderData graphShaderData;
     public bool multipleGraphShown =false;
     List<int> indexesList;
     // Start is called before the first frame update
@@ -42,12 +40,12 @@ public class MaximizeMultiple : MonoBehaviour
             //Powrót do grida
             List<GameObject> list = new List<GameObject>();
             gridSection.GetChildGameObjects(list);
-            ShaderDataMultiple multipleshaderData = multipleGraphSection.GetComponentInChildren<GraphControll>().GetShaderData();
+            GraphShaderData multipleshaderData = multipleGraphSection.GetComponentInChildren<GraphControll>().GetShaderData();
             int graphIndex = 0;
             foreach(int i in indexesList)
             {
 
-                ShaderDataMultiple shaderData = list[i].GetComponentInChildren<GraphControll>().GetShaderData();
+                GraphShaderData shaderData = list[i].GetComponentInChildren<GraphControll>().GetShaderData();
                 Graph graph = multipleshaderData.graphs[graphIndex];
                 shaderData.graphs[0].points = graph.points;
                 shaderData.lineColor = graph.lineColor;
@@ -74,7 +72,7 @@ public class MaximizeMultiple : MonoBehaviour
                 bool choosen = list[i].GetNamedChild("ButtonChoose").GetComponentInChildren<TwoStateButton>().value;
                 if(choosen)
                 {
-                    ShaderDataMultiple shaderData = list[i].GetComponentInChildren<GraphControll>().GetShaderData();
+                    GraphShaderData shaderData = list[i].GetComponentInChildren<GraphControll>().GetShaderData();
                     Graph graph = new Graph();
                     graph.points = shaderData.graphs[0].points;
                     graph.lineColor = shaderData.graphs[0].lineColor;
@@ -83,7 +81,7 @@ public class MaximizeMultiple : MonoBehaviour
                     indexesList.Add(i);
                 }
             }
-            shaderDataMultiple.graphs = graphs.ToArray();
+            graphShaderData.graphs = graphs.ToArray();
 
             gridSection.SetActive(false);
             multipleGraphSection.SetActive(true);
@@ -91,36 +89,6 @@ public class MaximizeMultiple : MonoBehaviour
 
         }
 
-
-
-        //if (!multipleGraphShown)
-        //{
-        //    multipleGraphSection.SetActive(true);
-        //    gridSection.SetActive(false);
-        //    List<GameObject> list = new List<GameObject>();
-        //    gridSection.GetChildGameObjects(list);
-        //    List<Graph> graphs = new List<Graph>();
-        //    foreach (GameObject go in list)
-        //    {
-        //        Maximize child = go.GetComponent<Maximize>();
-        //        if( child.pushButtonMultiple.value)
-        //        {
-        //            Graph graph = new Graph();
-        //            graph.points = child.shaderData.points;
-        //            graph.lineColor = child.shaderData.lineColor;
-        //            graph.pointColor = child.shaderData.pointColor;
-        //            graphs.Add(graph);
-        //        }
-        //    }
-        //    shaderDataMultiple.graphs = graphs.ToArray();
-        //    multipleGraphShown = true;
-        //}
-        //else
-        //{
-        //    multipleGraphSection.SetActive(false);
-        //    gridSection.SetActive(true);
-        //    multipleGraphShown = false;
-        //}
         
     }
 }
