@@ -33,6 +33,7 @@ public class InOutDataController : MonoBehaviour
         dropdownIon.value = 0;
         buttonSave.selectEntered.AddListener(x => SaveIon());
         buttonExport.selectEntered.AddListener(x => ExportIon());
+        InitializeConfigData();
         InitializeDropdownIon();
     }
     public bool CheckIfsaved(string nameOfIon)
@@ -133,6 +134,14 @@ public class InOutDataController : MonoBehaviour
             //ion.Split('\\').Last()
             dropdownIon.options.Add(new TMP_Dropdown.OptionData(ion.name));
         }
+    }
+
+    private void InitializeConfigData()
+    {
+        ConfigData confData =  JsonConvert.DeserializeObject<ConfigData>(File.ReadAllText(Directory.GetCurrentDirectory() + "/Assets/INZ/DATA/config.json"));
+        pathToExport = confData.pathToExport;
+        pathToSave = confData.pathToSave;
+        pathToIonsFile = confData.pathToIonsFile;
     }
 
     private void ReloadDropdownIon(string newOption)
