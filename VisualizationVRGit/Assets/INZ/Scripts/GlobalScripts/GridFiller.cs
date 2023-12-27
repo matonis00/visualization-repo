@@ -9,7 +9,6 @@ public class GridFiller : MonoBehaviour
     public GameObject sectionPrefab;
     public TMP_Dropdown ionDropdown;
     public MaximizeController maximizeController;
-    public InOutDataController dataController;
 
     // Start is called before the first frame update
     private void Start()
@@ -20,12 +19,12 @@ public class GridFiller : MonoBehaviour
 
     private void Fill(int arg0)
     {
-        int numberOfElements = dataController.ionData[arg0].laserAmount;
+        int numberOfElements = InOutDataController.instance.ionData[arg0].laserAmount;
         string ionName = ionDropdown.options[arg0].text;
         SaveData saveData = null;
-        if (dataController.CheckIfsaved(ionName))
+        if (InOutDataController.instance.CheckIfsaved(ionName))
         {
-            saveData = dataController.LoadIonData(ionName);
+            saveData = InOutDataController.instance.LoadIonData(ionName);
             Debug.Log("jest");
         }
         else Debug.Log("Nie ma");

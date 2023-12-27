@@ -12,6 +12,8 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class InOutDataController : MonoBehaviour
 {
+    public static InOutDataController instance { get; private set; }
+
     public GameObject gridSection;
     public XRSimpleInteractable buttonSave;
     public XRSimpleInteractable buttonExport;
@@ -29,6 +31,10 @@ public class InOutDataController : MonoBehaviour
     
     void Awake()
     {
+        if (instance != null && instance != this)
+            Destroy(this);
+        else
+            instance = this;
 
         dropdownIon.value = 0;
         buttonSave.selectEntered.AddListener(x => SaveIon());
