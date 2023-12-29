@@ -11,7 +11,6 @@ public class GridFiller : MonoBehaviour
     /// </summary>
     [SerializeField] private GameObject sectionPrefab;
     [SerializeField] private TMP_Dropdown ionDropdown;
-    [SerializeField] private MaximizeController maximizeController;
 
     /// <summary>
     /// Method <c>Start</c> is called before the first frame update, reposonsible for set up of class 
@@ -50,7 +49,6 @@ public class GridFiller : MonoBehaviour
             }
             
         }
-        maximizeController.AddListenersToGridElements();
     }
 
 }

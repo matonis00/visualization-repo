@@ -8,40 +8,30 @@ using UnityEngine.XR.Interaction.Toolkit;
 /// </summary>
 public class MaximizeController : MonoBehaviour
 {
+    /// <summary>
+    /// Instance of <c>MaximizeController</c> class
+    /// </summary>
+    public static MaximizeController instance { get; private set; }
+
+
     [SerializeField] private GameObject multipleGraphSection;
     [SerializeField] private GameObject gridSection;
     [SerializeField] private GraphShaderData graphShaderData;
     [SerializeField] private bool multipleGraphShown = false;
     List<int> indexesList;
 
-
-    /// <summary>
-    /// Method <c>Start</c> is called before the first frame update, reposonsible for set up of class 
-    /// </summary>
-    void Start()
+    void Awake()
     {
-        multipleGraphSection.GetNamedChild("ButtonMinMax").GetComponentInChildren<XRSimpleInteractable>().selectEntered.AddListener(x => MaximizeSection());
-        AddListenersToGridElements();
+        if (instance != null && instance != this)
+            Destroy(this);
+        else
+            instance = this;
     }
-
-    /// <summary>
-    /// Method <c>AddListenersToGridElements</c> set up listeners to all of gridSection sub-sections
-    /// </summary>
-    public void AddListenersToGridElements()
-    {
-        List<GameObject> sectionList = new List<GameObject>();
-        gridSection.GetChildGameObjects(sectionList);
-        foreach(GameObject section in sectionList)
-        {
-            section.GetNamedChild("ButtonMinMax").GetComponentInChildren<XRSimpleInteractable>().selectEntered.AddListener(x => MaximizeSection()); 
-        }
-    }
-
 
     /// <summary>
     /// Method <c>MaximizeSection</c> maximize choseen sections or minimize bigger section if its shown
     /// </summary>
-    void MaximizeSection()
+    public void MaximizeSection()
     {
         if (multipleGraphShown)
         {
@@ -71,7 +61,7 @@ public class MaximizeController : MonoBehaviour
             indexesList = new List<int>();
             for (int i = 0;i<list.Count;i++)
             {
-                bool choosen = list[i].GetNamedChild("ButtonChoose").GetComponentInChildren<TwoStateButton>().value;
+                bool choosen = list[i].GetNamedChild("ButtonChoose").GetComponentInChildren<TwoStateButton>().GetValue();
                 if(choosen)
                 {
                     GraphShaderData shaderData = list[i].GetComponentInChildren<GraphControll>().GetShaderData();

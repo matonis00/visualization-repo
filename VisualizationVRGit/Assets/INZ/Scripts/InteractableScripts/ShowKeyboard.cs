@@ -8,9 +8,9 @@ using UnityEngine;
 public class ShowKeyboard : MonoBehaviour
 {
     private TMP_InputField inputField;
-    public float distance = 0.5f;
-    public float verticaloffset = -0.5f;
-    public Transform positionSource;
+    [SerializeField] private float distance = 0.5f;
+    [SerializeField] private float verticaloffset = -0.5f;
+    [SerializeField] private Transform positionSource;
 
 
     /// <summary>

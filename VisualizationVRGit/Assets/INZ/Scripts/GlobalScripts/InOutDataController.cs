@@ -95,7 +95,7 @@ public class InOutDataController : MonoBehaviour
     /// </summary>
     private void ExportIon()
     {
-        string nameOfIon = (buttonNewIon.value) ? inputIonName.text : dropdownIon.options[dropdownIon.value].text;
+        string nameOfIon = (buttonNewIon.GetValue()) ? inputIonName.text : dropdownIon.options[dropdownIon.value].text;
 
         string pathToIonDirectory = pathToExport + "/" + nameOfIon;
         string pathToIonFile = pathToIonDirectory + "/" + "Ion.json";
@@ -193,7 +193,7 @@ public class InOutDataController : MonoBehaviour
     /// </summary>
     private void SaveIon()
     {
-        string nameOfIon = (buttonNewIon.value) ? inputIonName.text : dropdownIon.options[dropdownIon.value].text;
+        string nameOfIon = (buttonNewIon.GetValue()) ? inputIonName.text : dropdownIon.options[dropdownIon.value].text;
         string pathToIonDirectory = pathToSave + "/" + nameOfIon;
         float piTimeValue = float.Parse(inputPitime.text) * (float)Math.Pow(10, -3 * (dropdownPitimeUnit.value + 1));
 
@@ -219,7 +219,7 @@ public class InOutDataController : MonoBehaviour
         {
             Directory.CreateDirectory(pathToIonDirectory);
             File.WriteAllText(pathToIonFile, outputJSON);
-            if (buttonNewIon.value) AddDropdownIon(nameOfIon, saveData.graphs.Length);
+            if (buttonNewIon.GetValue()) AddDropdownIon(nameOfIon, saveData.graphs.Length);
         }
         else
         {
@@ -233,7 +233,7 @@ public class InOutDataController : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (buttonNewIon.value)
+        if (buttonNewIon.GetValue())
         {
             newMenu.SetActive(true);
         }

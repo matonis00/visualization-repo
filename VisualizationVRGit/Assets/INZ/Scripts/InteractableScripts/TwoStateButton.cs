@@ -6,11 +6,11 @@ using UnityEngine.XR.Interaction.Toolkit;
 /// </summary>
 public class TwoStateButton : MonoBehaviour
 {
-    public MeshRenderer meshRenderer;
-    public Material materialOn;
-    public Material materialOff;
-    public bool value =false;
-    public XRSimpleInteractable interactable;
+    [SerializeField] private MeshRenderer meshRenderer;
+    [SerializeField] private Material materialOn;
+    [SerializeField] private Material materialOff;
+    [SerializeField] private bool value =false;
+    [SerializeField] private XRSimpleInteractable interactable;
 
     /// <summary>
     /// Method <c>Start</c> is called before the first frame update, reposonsible for set up of class
@@ -28,6 +28,27 @@ public class TwoStateButton : MonoBehaviour
         value =!value;
         
     }
+
+    /// <summary>
+    /// Method <c>GetValue</c> returns value of button
+    /// </summary>
+    /// <returns></returns>
+    public bool GetValue()
+    {
+        return value;
+    }
+
+
+
+    /// <summary>
+    /// Method <c>SetValue</c> set value of button to given value
+    /// </summary>
+    /// <param name="newValue">New value to set</param>
+    public void SetValue(bool newValue)
+    {
+        value = newValue;
+    }
+
 
     /// <summary>
     /// Method <c>Update</c> called once per frame is reposonsible change color of visual part of button based on its value

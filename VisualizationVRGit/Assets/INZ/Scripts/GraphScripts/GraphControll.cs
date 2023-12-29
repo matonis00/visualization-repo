@@ -52,7 +52,7 @@ public class GraphControll : MonoBehaviour
         buttonNextOffset.selectEntered.AddListener(OffsetNext);
 
         buttonModeChange.selectEntered.AddListener(ChangeMode);
-        buttonModeChange.GetComponent<TwoStateButton>().value = createMode;
+        buttonModeChange.GetComponent<TwoStateButton>().SetValue(createMode);
 
     }
 
@@ -195,7 +195,7 @@ public class GraphControll : MonoBehaviour
         if(graphShaderData.graphs.Length != 1 ) 
         {
             createMode = false;
-            buttonModeChange.GetComponent<TwoStateButton>().value = false;
+            buttonModeChange.GetComponent<TwoStateButton>().SetValue(false);
             buttonModeChangeGO.SetActive(false);
             buttonModeChangeDescGO.SetActive(false);
         }
