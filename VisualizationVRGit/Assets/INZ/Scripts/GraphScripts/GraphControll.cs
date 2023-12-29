@@ -1,25 +1,24 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using Unity.Mathematics;
 using UnityEngine.XR.Content.Interaction;
 
-
+/// <summary>
+/// Class <c>GraphControll</c> controls and manages interactions and actions of user with graph
+/// </summary>
 public class GraphControll : MonoBehaviour
 {
-    public XRKnob knobScaleX;
-    public XRSimpleInteractable buttonBackOffset;
-    public XRSimpleInteractable buttonNextOffset;
-    public XRSimpleInteractable buttonModeChange;
-    public GameObject buttonModeChangeGO;
-    public GameObject buttonModeChangeDescGO;
-    public XRSimpleInteractable simpleInteractable;
+    [SerializeField] private XRKnob knobScaleX;
+    [SerializeField] private XRSimpleInteractable buttonBackOffset;
+    [SerializeField] private XRSimpleInteractable buttonNextOffset;
+    [SerializeField] private XRSimpleInteractable buttonModeChange;
+    [SerializeField] private GameObject buttonModeChangeGO;
+    [SerializeField] private GameObject buttonModeChangeDescGO;
+    [SerializeField] private XRSimpleInteractable simpleInteractable;
+
 
     MeshCollider meshCollider;
     IXRSelectInteractor xrInteractor;
-    
     GraphShaderData graphShaderData;
     bool createMode = false;
     bool attached = false;
@@ -30,7 +29,9 @@ public class GraphControll : MonoBehaviour
     float nowMinY;
     float nowMaxY;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Method <c>Start</c> is called before the first frame update, reposonsible for set up of class and controlled interactables 
+    /// </summary>
     void Start()
     {
         simpleInteractable = GetComponent<XRSimpleInteractable>();
@@ -55,11 +56,19 @@ public class GraphControll : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Method <c>ChangeMode</c> changes value of createMode variable that indicates what the current operating mode is
+    /// </summary>
+    /// <param name="arg0">Inforamtion about SelectEnter event</param>
     private void ChangeMode(SelectEnterEventArgs arg0)
     {
         createMode = !createMode;
     }
 
+    /// <summary>
+    /// Method <c>OffsetNext</c> changes offset of graph axis to next interval that depends on current scale of graph
+    /// </summary>
+    /// <param name="arg0">Inforamtion about SelectEnter event</param>
     private void OffsetNext(SelectEnterEventArgs arg0)
     {
         int addition = 16;
@@ -76,9 +85,12 @@ public class GraphControll : MonoBehaviour
             addition = 2;
         }
         float newOffset = graphShaderData.graphOffsetOnX + addition;
-        graphShaderData.ChangeOffsetX(newOffset);
+        graphShaderData.SetOffsetOnX(newOffset);
     }
-
+    /// <summary>
+    /// Method <c>OffsetBack</c> changes offset of graph axis to previous interval that depends on current scale of graph
+    /// </summary>
+    /// <param name="arg0">Inforamtion about SelectEnter event</param>
     private void OffsetBack(SelectEnterEventArgs arg0)
     {
         int addition = 16;
@@ -95,9 +107,13 @@ public class GraphControll : MonoBehaviour
             addition = 2;
         }
         float newOffset = graphShaderData.graphOffsetOnX - addition;
-        if(newOffset >= -2)graphShaderData.ChangeOffsetX(newOffset);
+        if(newOffset >= -2)graphShaderData.SetOffsetOnX(newOffset);
     }
 
+    /// <summary>
+    /// Method <c>ScaleChangeX</c> change scale of graph based on given value
+    /// </summary>
+    /// <param name="arg0">Value of knob to change skale (normlaized)</param>
     private void ScaleChangeX(float arg0)
     {
 
@@ -113,15 +129,23 @@ public class GraphControll : MonoBehaviour
 
         }
 
-        graphShaderData.ChangeScaleX(newScale);
+        graphShaderData.SetScaleOnX(newScale);
     }
- 
+
+    /// <summary>
+    /// Method <c>DisAttach</c> reset variables used to attach point to interactor
+    /// </summary>
+    /// <param name="arg0">Inforamtion about SelectExit event</param>
     private void DisAttach(SelectExitEventArgs arg0)
     {
         attached = false;
         xrInteractor = null;
     }
 
+    /// <summary>
+    /// Method <c>Attach</c> attach point to interactor or create new point if <c>createMode</c> is set to <c>true</c>
+    /// </summary>
+    /// <param name="arg0"></param>
     private void Attach(SelectEnterEventArgs arg0)
     {
         Vector3 inteactionPoint = meshCollider.ClosestPointOnBounds(arg0.interactorObject.transform.position);
@@ -146,6 +170,10 @@ public class GraphControll : MonoBehaviour
 
     }
 
+
+    /// <summary>
+    /// Method <c>Update</c> called once per frame updates value of processed variables and if variable <c>attached</c> is set true moves the point to the correct coordinates
+    /// </summary>
     void Update()
     {
         nowMinX = graphShaderData.graphOffsetOnX;
@@ -178,6 +206,10 @@ public class GraphControll : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method <c>GetShaderData</c> returns <c>GraphShaderData</c> of graph
+    /// </summary>
+    /// <returns>Value of <c>graphShaderData</c> variable</returns>
     public GraphShaderData GetShaderData()
     {
         return graphShaderData;

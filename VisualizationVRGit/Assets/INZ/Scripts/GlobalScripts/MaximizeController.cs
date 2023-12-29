@@ -1,26 +1,32 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Unity.XR.CoreUtils;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.XR.Interaction.Toolkit;
 
+/// <summary>
+/// Class <c>MaximizeController</c> control process of maximization and minimization of graph sections
+/// </summary>
 public class MaximizeController : MonoBehaviour
 {
-    public GameObject multipleGraphSection;
-    public GameObject gridSection;
-    public GraphShaderData graphShaderData;
-    public bool multipleGraphShown =false;
+    [SerializeField] private GameObject multipleGraphSection;
+    [SerializeField] private GameObject gridSection;
+    [SerializeField] private GraphShaderData graphShaderData;
+    [SerializeField] private bool multipleGraphShown = false;
     List<int> indexesList;
-    // Start is called before the first frame update
+
+
+    /// <summary>
+    /// Method <c>Start</c> is called before the first frame update, reposonsible for set up of class 
+    /// </summary>
     void Start()
     {
         multipleGraphSection.GetNamedChild("ButtonMinMax").GetComponentInChildren<XRSimpleInteractable>().selectEntered.AddListener(x => MaximizeSection());
         AddListenersToGridElements();
     }
 
+    /// <summary>
+    /// Method <c>AddListenersToGridElements</c> set up listeners to all of gridSection sub-sections
+    /// </summary>
     public void AddListenersToGridElements()
     {
         List<GameObject> sectionList = new List<GameObject>();
@@ -32,12 +38,13 @@ public class MaximizeController : MonoBehaviour
     }
 
 
-    // Update is called once per frame
+    /// <summary>
+    /// Method <c>MaximizeSection</c> maximize choseen sections or minimize bigger section if its shown
+    /// </summary>
     void MaximizeSection()
     {
         if (multipleGraphShown)
         {
-            //Powrót do grida
             List<GameObject> list = new List<GameObject>();
             gridSection.GetChildGameObjects(list);
             GraphShaderData multipleshaderData = multipleGraphSection.GetComponentInChildren<GraphControll>().GetShaderData();
@@ -51,15 +58,10 @@ public class MaximizeController : MonoBehaviour
                 shaderData.lineColor = graph.lineColor;
                 shaderData.pointColor = graph.pointColor;
                 graphIndex++;
-
             }
-
             gridSection.SetActive(true);
             multipleGraphSection.SetActive(false);
             multipleGraphShown = false;
-            
-
-
         }
         else
         {
@@ -86,9 +88,6 @@ public class MaximizeController : MonoBehaviour
             gridSection.SetActive(false);
             multipleGraphSection.SetActive(true);
             multipleGraphShown = true;
-
-        }
-
-        
+        } 
     }
 }

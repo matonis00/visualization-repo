@@ -1,14 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
+/// <summary>
+/// Class <c>ButtonFollowVisual</c> controls visual of interactable button
+/// </summary>
 public class ButtonFollowVisual : MonoBehaviour
 {
-    public Transform visualTarget;
-    public Vector3 localAxis;
-    public float resetSpeed =5f;
-    public float followAngleTreshold=45f;
+    [SerializeField] private Transform visualTarget;
+    [SerializeField] private Vector3 localAxis;
+    [SerializeField] private float resetSpeed =5f;
+    [SerializeField] private float followAngleTreshold=45f;
+
+
+
     private bool freeze = false;
 
     private Vector3 initialLocalPosition;
@@ -18,17 +22,24 @@ public class ButtonFollowVisual : MonoBehaviour
 
     private XRBaseInteractable interactable;
     private bool isFollowing = false;
-    // Start is called before the first frame update
+
+
+    /// <summary>
+    /// Method <c>Start</c> is called before the first frame update, reposonsible for set up of class and controlled visual
+    /// </summary>
     void Start()
     {
         initialLocalPosition = visualTarget.localPosition;
-
         interactable = GetComponent<XRBaseInteractable>();
         interactable.hoverEntered.AddListener(Follow);
         interactable.hoverExited.AddListener(ResetButton);
         interactable.selectEntered.AddListener(Freeze);
     }
 
+    /// <summary>
+    /// Method <c>Follow</c> is used to start process of folowing interactor by visual
+    /// </summary>
+    /// <param name="hover">Information on BaseInteraction event</param>
     public void Follow(BaseInteractionEventArgs hover)
     {
         if(hover.interactorObject is XRPokeInteractor)
@@ -37,10 +48,8 @@ public class ButtonFollowVisual : MonoBehaviour
 
             pokeAttachTransform = interactor.attachTransform;
             offset = visualTarget.position - pokeAttachTransform.position;
-            Debug.Log(offset);
 
             float pokeAngle = Vector3.Angle(offset, visualTarget.TransformDirection(localAxis));
-            Debug.Log(pokeAngle);
             if (pokeAngle < followAngleTreshold)
             {
                 isFollowing = true;
@@ -49,6 +58,10 @@ public class ButtonFollowVisual : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method <c>ResetButton</c>  is used to end process of folowing interactor by visual and resets visual
+    /// </summary>
+    /// <param name="hover">Information on BaseInteraction event</param>
     public void ResetButton(BaseInteractionEventArgs hover)
     {
         if (hover.interactorObject is XRPokeInteractor)
@@ -58,6 +71,10 @@ public class ButtonFollowVisual : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method <c>Freeze</c> is used to freez visual
+    /// </summary>
+    /// <param name="hover">Information on BaseInteraction event</param>
     public void Freeze(BaseInteractionEventArgs hover)
     {
         if (hover.interactorObject is XRPokeInteractor)
@@ -67,7 +84,9 @@ public class ButtonFollowVisual : MonoBehaviour
     }
 
 
-    // Update is called once per frame
+    /// <summary>
+    /// Method <c>Update</c> called once per frame is reposonsible moving visual in right direction based on set variables
+    /// </summary>
     void Update()
     {
         if(freeze) 

@@ -1,11 +1,10 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
-
+/// <summary>
+/// Class <c>GraphShaderData</c> responsible for set up and controll of Graph
+/// </summary>
 public class GraphShaderData : MonoBehaviour
 {
 
@@ -13,8 +12,6 @@ public class GraphShaderData : MonoBehaviour
     private MaterialPropertyBlock materialPB;
 
     public MeshRenderer meshRenderer;
-
-
 
     public float graphOffsetOnX = -2f;
     public float graphOffsetOnY = -2f;
@@ -72,13 +69,17 @@ public class GraphShaderData : MonoBehaviour
 
   
     public Graph[] graphs;
-    
+
+    /// <summary>
+    /// Method <c>Start</c> is called before the first frame update, reposonsible for set up of class
+    /// </summary>
     private void Start()
     {
-
-
         materialPB = new MaterialPropertyBlock();
     }
+    /// <summary>
+    /// Method <c>Update</c> called once per frame sending all information to material in order to draw graph
+    /// </summary>
     void Update()
     {
         int desireLength = 0;
@@ -99,7 +100,7 @@ public class GraphShaderData : MonoBehaviour
             index++;
             input.SetPixel(index, 0, graphs[i].lineColor);
             index++;
-            input.SetPixel(index, 0, new Color(normalizeValue(orderedPoints.Length,minPointAmount,maxPointAmount),0f,0f,1f));
+            input.SetPixel(index, 0, new Color(NormalizeValue(orderedPoints.Length,minPointAmount,maxPointAmount),0f,0f,1f));
             index++;
 
            
@@ -107,7 +108,7 @@ public class GraphShaderData : MonoBehaviour
             for (int j = 0; j < orderedPoints.Length; j++, index++)
             {
                 //Debug.Log(normalizeValue(orderedPoints[j].x, minXPointValue, maxXPointValue));
-                input.SetPixel(index, 0, new Color(normalizeValue(orderedPoints[j].x,minXPointValue,maxXPointValue), normalizeValue(orderedPoints[j].y,minYPointValue,maxYPointValue), 1.0f,1.0f));
+                input.SetPixel(index, 0, new Color(NormalizeValue(orderedPoints[j].x,minXPointValue,maxXPointValue), NormalizeValue(orderedPoints[j].y,minYPointValue,maxYPointValue), 1.0f,1.0f));
             }
         }
         input.Apply();
@@ -136,9 +137,12 @@ public class GraphShaderData : MonoBehaviour
         meshRenderer.SetPropertyBlock(materialPB);
     }
 
-
-    //TODO REPAIR FOR MULTI
-    
+    /// <summary>
+    /// Method <c>GetClosestPiontIndex</c> give coordinates of closest point on graph
+    /// </summary>
+    /// <param name="x">Coordinate on X</param>
+    /// <param name="y">Coordinate on Y</param>
+    /// <returns>Returns coordinates of closest point</returns>
     public (int,int) GetClosestPiontIndex(float x, float y)
     {
         Vector2 point = new Vector2(x, y);
@@ -163,28 +167,47 @@ public class GraphShaderData : MonoBehaviour
 
         return (graphIndex, pointIndex);
     }
-    
 
-    public void ChangeScaleY(float scale)
+    /// <summary>
+    /// Method <c>SetScaleOnY</c> set <c>graphScaleOnY</c> variable
+    /// </summary>
+    /// <param name="scale">Value of new scale</param>
+    public void SetScaleOnY(float scale)
     {
         graphScaleOnY = scale;
     }
 
-    public void ChangeScaleX(float scale)
+    /// <summary>
+    /// Method <c>SetScaleOnX</c> set <c>graphScaleOnX</c> variable
+    /// </summary>
+    /// <param name="scale">Value of new scale</param>
+    public void SetScaleOnX(float scale)
     {
         graphScaleOnX = scale;
     }
 
-    public void ChangeOffsetY(float offset)
+    /// <summary>
+    /// Method <c>SetOffsetOnY</c> set <c>graphOffsetOnY</c> variable
+    /// </summary>
+    /// <param name="offset">Value of new offset</param>
+    public void SetOffsetOnY(float offset)
     {
         graphOffsetOnY = offset;
     }
 
-    public void ChangeOffsetX(float offset)
+    /// <summary>
+    /// Method <c>SetOffsetOnX</c> set <c>graphOffsetOnX</c> variable
+    /// </summary>
+    /// <param name="offset">Value of new offset</param>
+    public void SetOffsetOnX(float offset)
     {
         graphOffsetOnX = offset;
     }
 
+    /// <summary>
+    /// Method <c>CopyValuesFrom</c> copy value from other <c>GraphShaderData</c> object
+    /// </summary>
+    /// <param name="input">Object of <c>GraphShaderData</c> class to copy form</param>
     public void CopyValuesFrom(GraphShaderData input)
     {
         graphOffsetOnX = input.graphOffsetOnX;
@@ -218,12 +241,23 @@ public class GraphShaderData : MonoBehaviour
 
     }
 
-    private float normalizeValue(float value, float minValue, float maxValue)
+    /// <summary>
+    /// Method <c>NormalizeValue</c> normalize value with given minimum and maximum
+    /// </summary>
+    /// <param name="value">Value to normalization</param>
+    /// <param name="minValue">Minimal value</param>
+    /// <param name="maxValue">Maximal value</param>
+    /// <returns>Normalized value</returns>
+    private float NormalizeValue(float value, float minValue, float maxValue)
     {
         return (value - minValue) / (maxValue - minValue);
     }
 
-
+    /// <summary>
+    /// Method <c>AddPointToGraph</c> adds new point to graph of given index
+    /// </summary>
+    /// <param name="graphIndex">Index of graph to add point to</param>
+    /// <param name="point">Point to add to the graph</param>
     public void AddPointToGraph(int graphIndex, Vector2 point)
     {
         List<Vector2> list = graphs[graphIndex].points.ToList<Vector2>();

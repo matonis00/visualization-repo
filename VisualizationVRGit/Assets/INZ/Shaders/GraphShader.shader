@@ -152,8 +152,7 @@ Shader "Unlit/GraphShader"
                 {
                     return previos;
                 }
-                
-                //float xd = acos( dot(a,b) / (distance(a,float2(0,0)) * distance(b,float2(0,0))));
+
                 
             }
 
@@ -165,7 +164,6 @@ Shader "Unlit/GraphShader"
                 float2 ba = b - a;
 
                 float h = clamp( dot(pa,ba)/dot(ba,ba), 0.0, 1.0 );
-                // ????????
                 float idk = length(pa - ba*h);
 
                 return smoothstep(0.0, thickness, idk);
@@ -208,14 +206,12 @@ Shader "Unlit/GraphShader"
                 for (int i = 1; i <= subLines; i++) {
                     float2 b = splineInterpolation(p0, p1, p2, p3, float(i)*(1.0/float(subLines)));
                     curve = Line3(p,a,b,thickness);
-                    //curve = drawCircle(b,p,thickness);
                     if(curve != 1.0) return 0.0;
                     a = b;
                 }
                 
                 return curve;              
                 
-                //float xd = acos( dot(a,b) / (distance(a,float2(0,0)) * distance(b,float2(0,0))));
                 
             }
 
@@ -230,7 +226,6 @@ Shader "Unlit/GraphShader"
                 //Scale and Offset for uv coordinates
                 float2 scale = float2(_ScaleX, _ScaleY);
                 float2 offset = float2(_OffsetX, _OffsetY);
-                //_PointA = (_PointA + offset) * scale;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 
                 o.uv = (v.uv0 ) * scale + offset;
@@ -246,14 +241,14 @@ Shader "Unlit/GraphShader"
                 axis = smoothstep(axisThickness -0.05, axisThickness,axis);
                 
                 //Calculating grid
-                float2 temp = abs(i.uv % _UnitPerGridX); // modulo co ile ma występowac kratka ->  co jedną jednostkę
+                float2 temp = abs(i.uv % _UnitPerGridX); 
                 float gridThickness = 0.04 *_UnitPerGridX;// (1.0/450.0) *16.0;
                 float gridSize = 0.5 * _UnitPerGridX;
                 float gridX = gridSize - abs(temp.x - gridSize);
                 gridX = smoothstep(0.0,gridThickness,gridX);
 
 
-                temp = abs(i.uv % _UnitPerGridY); // modulo co ile ma występowac kratka ->  co jedną jednostkę
+                temp = abs(i.uv % _UnitPerGridY); 
                 gridThickness = 0.04 * _UnitPerGridY;// (1.0/450.0) *16.0;
                 gridSize = 0.5 * _UnitPerGridY;
                 float gridY = gridSize -  abs(temp.y - gridSize);

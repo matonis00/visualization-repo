@@ -1,29 +1,29 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using Unity.Mathematics;
+﻿using TMPro;
 using UnityEngine;
-using UnityEngine.XR.Content.Interaction;
-using UnityEngine.XR.Interaction.Toolkit;
 
+/// <summary>
+/// Class <c>GraphScaleDescControll</c> controls graph scale descriptions
+/// </summary>
 public class GraphScaleDescControll : MonoBehaviour
 {
-    public GraphShaderData shaderData;
-    public RectTransform scaleDesc1Transform;
-    public RectTransform scaleDesc3Transform;
-    public RectTransform scaleDescY0Transform;
-    public RectTransform scaleDescY1Transform;
+    [SerializeField] private GraphShaderData shaderData;
+    [SerializeField] private RectTransform scaleDesc1Transform;
+    [SerializeField] private RectTransform scaleDesc3Transform;
+    [SerializeField] private RectTransform scaleDescY0Transform;
+    [SerializeField] private RectTransform scaleDescY1Transform;
 
-    public TextMeshProUGUI scaleDesc1;
-    public TextMeshProUGUI scaleDesc2;
-    public TextMeshProUGUI scaleDesc3;
-    public TextMeshProUGUI scaleDescAxiX;
+    [SerializeField] private TextMeshProUGUI scaleDesc1;
+    [SerializeField] private TextMeshProUGUI scaleDesc2;
+    [SerializeField] private TextMeshProUGUI scaleDesc3;
+    [SerializeField] private TextMeshProUGUI scaleDescAxiX;
 
-    float scaleGraphElement = 19.5f;
+    /// <summary>
+    /// Method <c>Update</c> is called once per frame, refresh value and positio of scale desctiptions for graph
+    /// </summary>
     void Update()
     {
-        float sizeOfUnit = 19.5f / shaderData.graphScaleOnX;
+        float scaleGraphElement = 19.5f;
+        float sizeOfUnit = scaleGraphElement / shaderData.graphScaleOnX;
         float scale = shaderData.graphScaleOnX - 4;
         
         float offset = shaderData.graphOffsetOnX + 2f; //π
