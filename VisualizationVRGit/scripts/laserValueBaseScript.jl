@@ -56,6 +56,14 @@ function laserValue( laserIndex::Int, timeValue::Float64, ionfilePath::String)
         push!(vec,tmpvec);
     end
 
+    if(timeValue == vec[laserIndex][2].x) 
+        return vec[laserIndex][2]
+    end
+
+    if(timeValue == vec[laserIndex][length(vec[laserIndex])-1].x) 
+        return vec[laserIndex][length(vec[laserIndex])-1]
+    end
+    
     if(timeValue < vec[laserIndex][2].x) 
         println("Out of MIN range value")
         return
@@ -74,6 +82,8 @@ function laserValue( laserIndex::Int, timeValue::Float64, ionfilePath::String)
             break
         end
     end
+
+
 
     time = timeValue;
     time = normalization(time,vec[laserIndex][index-1].x,vec[laserIndex][index].x)

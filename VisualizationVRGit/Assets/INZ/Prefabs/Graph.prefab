@@ -365,11 +365,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Handle: {fileID: 3026666682379841810}
-  m_Value: 0
+  m_Value: 0.6
   m_ClampedMotion: 1
   m_MaxAngle: -90
   m_MinAngle: -270
-  m_AngleIncrement: 22.5
+  m_AngleIncrement: 36
   m_PositionTrackedRadius: 0.075
   m_TwistSensitivity: 1.5
   m_OnValueChange:
@@ -1213,7 +1213,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4063233464228503176}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: -0.7071068}
+  m_LocalRotation: {x: 0, y: -0.98768836, z: 0, w: 0.15643449}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

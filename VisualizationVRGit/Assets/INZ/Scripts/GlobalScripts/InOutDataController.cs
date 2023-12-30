@@ -108,7 +108,7 @@ public class InOutDataController : MonoBehaviour
         exportData.lasers = new List<Laser>();
 
         int juliaIndex = 1;
-        string julliaScript = "include(\""+ Directory.GetCurrentDirectory() + "/Assets/INZ/Scripts/laserValueBaseScript.jl\")\r\n" + "ionFile = \"" + pathToIonFile.Replace('\\', '/')+ "\"\r\n";
+        string julliaScript = "include(\""+ Directory.GetCurrentDirectory().Replace('\\','/') + "/scripts/laserValueBaseScript.jl\")\r\n" + "ionFile = \"" + pathToIonFile.Replace('\\', '/')+ "\"\r\n";
         string pathToJuliaScript = pathToIonDirectory + "/" + nameOfIon + "Lasers.jl";
         foreach (var graph in data)
         {
@@ -163,7 +163,10 @@ public class InOutDataController : MonoBehaviour
     /// </summary>
     private void InitializeConfigData()
     {
-        ConfigData confData =  JsonConvert.DeserializeObject<ConfigData>(File.ReadAllText(Directory.GetCurrentDirectory() + "/Assets/INZ/DATA/config.json"));
+        ConfigData confData =  JsonConvert.DeserializeObject<ConfigData>(File.ReadAllText(Directory.GetCurrentDirectory() + "/config/config.json"));
+        Debug.Log(Directory.GetCurrentDirectory() + "/config/config.json");
+        Debug.Log(confData.pathToIonsFile);
+
         pathToExport = confData.pathToExport;
         pathToSave = confData.pathToSave;
         pathToIonsFile = confData.pathToIonsFile;

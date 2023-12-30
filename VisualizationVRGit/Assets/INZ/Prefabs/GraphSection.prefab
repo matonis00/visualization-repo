@@ -1844,6 +1844,11 @@ PrefabInstance:
       propertyPath: m_SortingLayer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1670648052256819306, guid: 4ee7740d061e55c4db032289d0e89565,
+        type: 3}
+      propertyPath: m_Value
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 1799922712963707931, guid: 4ee7740d061e55c4db032289d0e89565,
         type: 3}
       propertyPath: m_SortingLayer
@@ -1868,6 +1873,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SortingLayer
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3026666682379841810, guid: 4ee7740d061e55c4db032289d0e89565,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.15643449
+      objectReference: {fileID: 0}
+    - target: {fileID: 3026666682379841810, guid: 4ee7740d061e55c4db032289d0e89565,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.98768836
       objectReference: {fileID: 0}
     - target: {fileID: 3122487474153233380, guid: 4ee7740d061e55c4db032289d0e89565,
         type: 3}
