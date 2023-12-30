@@ -119,13 +119,7 @@ public class GraphControll : MonoBehaviour
 
         int exponent = (int)math.remap(0, 1, 1, 6, knobScaleX.value);
         float newScale = 4 + math.pow(2, exponent);
-        Debug.Log(math.remap(1, 6, 0, 1, 1));
-        Debug.Log(math.remap(1, 6, 0, 1, 2));
-        Debug.Log(math.remap(1, 6, 0, 1, 3));
-        Debug.Log(math.remap(1, 6, 0, 1, 4));
-        Debug.Log(math.remap(1, 6, 0, 1, 5));
-        Debug.Log(math.remap(1, 6, 0, 1, 6));
-        Debug.Log(math.remap(0, 1, -90, -270, math.remap(1, 6, 0, 1, 4)));
+
        if(graphShaderData.graphScaleOnX <=12)
         {
             float temp = (graphShaderData.graphOffsetOnX + 2);
