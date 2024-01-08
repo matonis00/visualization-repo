@@ -4,4 +4,4 @@ Mateusz Górecki
 ## Zawartość
 - VisualizationVRGit zawiera pliki źródłowe aplikacji
 - Aplikacja.zip archiwum zawierające zbudowaną wersję aplikacji
-- dokumentacja.pdf plik zawierający dokumentacje kodu aplikacji
+- Dokumentacja.pdf plik zawierający dokumentacje kodu aplikacji
